@@ -1,5 +1,5 @@
 <div id="div-events-add-event">
-  <div class="step-one">
+  <div class="stepper">
     <mat-horizontal-stepper linear #stepper>
       <mat-step [stepControl]="firstStep">
         <form [formGroup]="firstStep">
@@ -30,6 +30,7 @@
         </form>
       </mat-step>
   <mat-step [stepControl]="secondStep">
+    <app-event-form></app-event-form>
     <form [formGroup]="secondStep">
       <ng-template matStepLabel>Fill out your address</ng-template>
       <div>

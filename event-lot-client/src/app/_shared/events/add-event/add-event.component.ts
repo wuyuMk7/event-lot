@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, 
+         Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -11,9 +13,9 @@ export class AddEventComponent implements OnInit {
   firstStep: FormGroup;
   secondStep: FormGroup;
   lastStep: FormGroup;
+  ownerGroupSelectionControl: FormControl;
 
   ownerTypes: string[] = ['Yourself', 'Group'];
-
   ownerGroups: string[] = ['fffff', 'kkkk'];
   filteredOwnerGroups: Observable<string[]>;
 
@@ -44,7 +46,7 @@ export class AddEventComponent implements OnInit {
     return this.ownerGroups.filter(group => group.toLowerCase().indexOf(filter) == 0)
   }
 
-  private _customValidatorOnGroupName(toBeChecked: boolean): ValidatorFn {
+  private _customValidatorOnGroupName(): ValidatorFn {
     return (control: FormGroup): ValidationErrors | null => {
       let vals = control.value;
       let toBeChecked = vals.ownerTypeCtrl === 'Group';
