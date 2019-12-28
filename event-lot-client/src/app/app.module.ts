@@ -12,11 +12,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddEventComponent } from './_shared/events/add-event/add-event.component';
+import { EventFormComponent } from './_shared/events/event-form/event-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AddEventComponent
+    AddEventComponent,
+    EventFormComponent
   ],
   imports: [
     BrowserModule,
