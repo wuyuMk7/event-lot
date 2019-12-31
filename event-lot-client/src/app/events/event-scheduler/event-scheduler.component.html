@@ -1,0 +1,28 @@
+<div class="div-event-scheduler">
+  <div class="form-fields" fxLayout="column" fxLayoutAlign="space-around" [formGroup]="eventScheduleGroup">
+    <mat-radio-group formControlName="type" fxLayout="column" fxLayoutAlign="space-around">
+      <mat-radio-button value="range"> One-time event </mat-radio-button>
+      <mat-hint> A one-time event happens in a specific date range and can be checked.</mat-hint>
+      <div class="form-fields" *ngIf="eventScheduleGroup.value.type === 'range'">
+        <mat-form-field>
+          <input matInput
+                 [matDatepicker]="startDatePicker" 
+                 placeholder="Start from"
+                 formControlName="startdate">
+          <mat-datepicker #startDatePicker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput
+                 [matDatepicker]="endDatePicker" 
+                 placeholder="End at"
+                 formControlName="enddate">
+          <mat-datepicker #endDatePicker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        </mat-form-field>
+      </div>
+      <mat-radio-button value="forever"> Lifelong event </mat-radio-button>
+      <mat-hint> A lifelong event exists forever and cannot be checked. </mat-hint>
+    </mat-radio-group>
+  </div>
+</div>
