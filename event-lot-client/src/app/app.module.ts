@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -11,14 +10,10 @@ import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AddEventComponent } from './_shared/events/add-event/add-event.component';
-import { EventFormComponent } from './_shared/events/event-form/event-form.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AddEventComponent,
-    EventFormComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -27,9 +22,7 @@ import { EventFormComponent } from './_shared/events/event-form/event-form.compo
     AngularFireModule.initializeApp(Environments.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
