@@ -1,0 +1,53 @@
+<div id="div-events-add-event">
+  <div class="stepper">
+    <mat-horizontal-stepper linear #stepper>
+      <mat-step [stepControl]="firstStep">
+        <form [formGroup]="firstStep">
+          <ng-template matStepLabel>Create an event for: </ng-template>
+          <div class="content">
+            <mat-radio-group formControlName="ownerTypeCtrl" fxLayout="column" fxLayoutAlign="space-around">
+              <mat-radio-button class="owner-types" *ngFor="let type of ownerTypes" [value]="type">
+                {{ type }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div *ngIf="firstStep.value.ownerTypeCtrl === 'Group'">
+            <mat-form-field class="owner-groups">
+              <input type="text" placeholder="Pick one group" 
+                     aria-label="OwnerGroupName" matInput 
+                     formControlName="ownerGroupNameCtrl" 
+                     [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let ownerGroup of filteredOwnerGroups | async" [value] = "ownerGroup">
+                  {{ ownerGroup }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+  <mat-step [stepControl]="secondStep">
+    <app-event-form [eventMode]="firstStep.value.ownerTypeCtrl"
+		    [groupID]="firstStep.value.ownerGroupNameCtrl"></app-event-form>
+    <form [formGroup]="secondStep">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper> 
+  </div>
+</div>

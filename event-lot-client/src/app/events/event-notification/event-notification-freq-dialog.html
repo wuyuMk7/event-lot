@@ -1,0 +1,61 @@
+<div id="div-event-notification-freq-dialog" [ngSwitch]="data.type">
+  <div class="freq-dialog" *ngSwitchCase="'week'">
+    <h1 mat-dialog-title> Day of week selection </h1>
+    <div mat-dialog-content>
+      <p cdkFocusInitial> At most 5 selections. </p>
+      <mat-selection-list #weekList [(ngModel)]="retnData">
+        <mat-list-option 
+          #dayItem *ngFor="let day of daysOfWeek" [value]="day"
+          [disabled]="weekList.selectedOptions.selected.length >= 5 && !dayItem.selected">
+          {{ day }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+  <div class="freq-dialog" *ngSwitchCase="'month'">
+    <h1 mat-dialog-title> Day of month selection</h1>
+    <div mat-dialog-content>
+      <p cdkFocusInitial> At most 5 selections. </p>
+      <mat-selection-list #monthList [(ngModel)]="retnData">
+        <mat-list-option 
+          #dayItem *ngFor="let day of daysOfMonth" [value]="day | dateSuffix"
+          [disabled]="monthList.selectedOptions.selected.length >= 5 && !dayItem.selected">
+          {{ day | dateSuffix }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+  <div class="freq-dialog" *ngSwitchCase="'year'">
+    <h1 mat-dialog-title> Day of year selection</h1>
+    <div mat-dialog-content>
+      <p cdkFocusInitial> At most 5 selections. </p>
+      <div *ngFor="let item of selectedDaysOfYear | keyvalue">
+        <mat-form-field>
+          <mat-label>Month</mat-label>
+          <mat-select (selectionChange)="changeMonth($event, item.key)" 
+            [(ngModel)]="item.value.m" #monthSelect>
+            <mat-option> -- </mat-option>
+            <mat-option *ngFor="let month of monthsOfYear" [value]="month">
+              {{ month }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Date</mat-label>
+          <mat-select [(ngModel)]="item.value.d" [disabled]="monthSelect.empty">
+            <mat-option *ngFor="let day of daysOfCurMonth[item.key]" [value]="day | dateSuffix">
+              {{ day | dateSuffix }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="freq-dialog" *ngSwitchDefault>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="submit()">OK</button>
+  </div>
+</div>

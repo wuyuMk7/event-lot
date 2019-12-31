@@ -1,0 +1,78 @@
+<div id="div-events-form"> 
+  <form> 
+    <mat-accordion>
+      <mat-expansion-panel expanded="true" #step1>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Event metadata
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="form-fields" fxLayout="column" fxLayoutAlign="space-around center" [formGroup]="eventCreationFormGroup">
+          <mat-form-field *ngIf="eventMode === 'Group' && groupID.length > 0">
+            <input matInput placeholder="GroupID" formControlName="group" [value]="groupID">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Topic" formControlName="topic">
+            <mat-error *ngIf="eventCreationFormGroup.controls.topic.hasError('required')">
+              Topic is required.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-chip-list #tagsList aria-label="Tags">
+              <mat-chip *ngFor="let eventTag of eventTags" 
+            	    [removable]="tagsRemovable" 
+            	    [selectable]="tagsSelectable" 
+            	    (removed)="removeTag(eventTag)">
+                {{ eventTag }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Tags (optional, at most 5 tags)" 
+            	 formControlName="tags"
+                     [matChipInputFor]="tagsList"
+            	 [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+            	 [matChipInputAddOnBlur]="addOnBlur"
+            	 (matChipInputTokenEnd)="addTag($event)">
+            </mat-chip-list>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput placeholder="Content" formControlName="content"></textarea>
+            <mat-error *ngIf="eventCreationFormGroup.controls.content.hasError('required')">
+              Content is required.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Timezone" formControlName="timezone">
+            <mat-error *ngIf="eventCreationFormGroup.controls.timezone.hasError('required')">
+              Timezone is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+	<div class="buttons-panel">
+          <button mat-raised-button (click)="step2.open()"> To event lifecycle setting</button>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel #step2>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Event lifecycle
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+	<app-event-scheduler></app-event-scheduler>
+	<div class="buttons-panel">
+          <button mat-raised-button (click)="step1.open()"> Back to event metadata</button>
+          <button mat-raised-button (click)="step3.open()"> To event notification setting</button>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel #step3>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Event notification
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+	<app-event-notification></app-event-notification>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</div>
+
+

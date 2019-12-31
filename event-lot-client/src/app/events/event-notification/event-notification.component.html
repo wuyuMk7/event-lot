@@ -1,0 +1,37 @@
+<div id="div-event-notification" [formGroup]="eventNotificationGroup">
+  <mat-radio-group formControlName="switch" fxLayout="column" fxLayoutAlign="space-around">
+    <mat-radio-button value="on"> Notification on </mat-radio-button>
+    <mat-hint> Event will appear in daily checklist.</mat-hint>
+    <mat-radio-button value="off"> Notification off </mat-radio-button>
+    <mat-hint> Event will not appear in daily checklist.</mat-hint>
+  </mat-radio-group>
+
+  <div *ngIf="eventNotificationGroup.value.switch === 'on'">
+  <mat-divider></mat-divider>
+  <mat-radio-group formControlName="frequency" (change)="openDialog($event)"
+	  fxLayout="column" fxLayoutAlign="space-around">
+    <mat-label> Event will appear in your checklist </mat-label>
+
+    <mat-radio-button value="day"> every day </mat-radio-button>
+
+    <mat-radio-button value="week" #radioWeekItem> every week on </mat-radio-button>
+    <div *ngIf="radioWeekItem.checked">
+      {{ selectedDaysForFreq.week.join(', ') }}
+      <button mat-button color="primary" (click)="openDialog({value: 'week'})"> Modify </button>
+    </div>
+
+    <mat-radio-button value="month" #radioMonthItem> every month on </mat-radio-button>
+    <div *ngIf="radioMonthItem.checked">
+      {{ selectedDaysForFreq.month.join(', ') }}
+      <button mat-button color="primary" (click)="openDialog({value: 'month'})"> Modify </button>
+    </div>
+
+    <mat-radio-button value="year" #radioYearItem> every year on </mat-radio-button>
+    <div *ngIf="radioYearItem.checked">
+      {{ selectedDaysForFreq.year.join(', ') }}
+      <button mat-button color="primary" (click)="openDialog({value: 'year'})"> Modify </button>
+    </div>
+  </mat-radio-group>
+  </div>
+
+</div>
