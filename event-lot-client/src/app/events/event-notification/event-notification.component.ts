@@ -8,7 +8,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { DateSuffixPipe } from '../date-suffix.pipe';
 
 const allDaysOfWeek: string[] = [
-  'Monday', 'Tuesday', 'Wednesday', 'Thursday', 
+  'Monday', 'Tuesday', 'Wednesday', 'Thursday',
   'Friday', 'Saturday', 'Sunday'
 ];
 const allDaysOfMonth: string[] = Array.from({length: 31}, (v, i)=> String(i+1));
@@ -35,7 +35,7 @@ export class EventNotificationComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _freqDialog: MatDialog
-  ) { 
+  ) {
     this.eventNotificationGroup = this._formBuilder.group({
       switch: ['on', Validators.required],
       frequency: ['day', Validators.required]
@@ -58,7 +58,7 @@ export class EventNotificationComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe(result => {
       if (result === undefined)
-        result = []; 
+        result = [];
       this.selectedDaysForFreq[type] = result;
     })
   }
@@ -79,8 +79,8 @@ export class EventNotificationFreqDialog implements OnInit{
 
   monthsOfYear = allMonthsOfYear;
   daysOfEachMonth = allDaysOfEachMonth;
-  daysOfCurMonth: { 
-    s1: string[], s2: string[], s3: string[], s4: string[], s5: string[] 
+  daysOfCurMonth: {
+    s1: string[], s2: string[], s3: string[], s4: string[], s5: string[]
   } = { s1: [], s2: [], s3: [], s4: [], s5: [] };
   selectedDaysOfYear: object = {
     s1: { m: '', d: '' },
@@ -97,15 +97,15 @@ export class EventNotificationFreqDialog implements OnInit{
     //this._dialogRef.backdropClick().subscribe(() => {
     //  this._dialogRef.close(this.retnData);
     //});
-    this._dialogRef.disableClose = true; 
+    this._dialogRef.disableClose = true;
   }
 
   ngOnInit() {
-    this.cacheData = this.data.value; 
+    this.cacheData = this.data.value;
     this.retnData = this.data.value;
 
     if (this.data.type === 'year') {
-      const curLength = this.data.value.length > 5 ? 5 : this.data.value.length;      
+      const curLength = this.data.value.length > 5 ? 5 : this.data.value.length;
       for (let i=0;i < curLength; ++i) {
         const key = `s${i+1}`;
         const value = this.data.value[i].split(' ');
@@ -131,12 +131,11 @@ export class EventNotificationFreqDialog implements OnInit{
     if (this.data.type == 'year') {
       let dataArray = [];
       for (const item of Object.values(this.selectedDaysOfYear))
-        if (item.m && item.d && item.m.length > 0 && item.d.length > 0) 
+        if (item.m && item.d && item.m.length > 0 && item.d.length > 0)
           dataArray.push(`${item.m} ${item.d}`)
       this.retnData = dataArray;
     }
-    console.log(this.retnData);
-    this._dialogRef.close(this.retnData); 
+    this._dialogRef.close(this.retnData);
   }
 
   cancel(): void {
@@ -145,7 +144,7 @@ export class EventNotificationFreqDialog implements OnInit{
 
   private _getDaysOfOneMonth(month: string): string[] {
     const index = this.monthsOfYear.indexOf(month);
-    if (index != -1)  
+    if (index != -1)
       return this.daysOfMonth.slice(0, parseInt(this.daysOfEachMonth[index]));
     else
       return [];

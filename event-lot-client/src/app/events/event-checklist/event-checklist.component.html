@@ -1,0 +1,63 @@
+<div id="div-event-checklist" fxLayout="column" fxLayoutAlign="space-around start">
+  <button mat-button (click)="openDialog('add', $event)"> Add a checklist item </button>
+  <button mat-button (click)="deleteItems()"> Delete items </button>
+  <div id="div-event-checklist-table" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+    
+      <!-- Index Column -->
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let index = index"> {{ index+1 }} </td>
+      </ng-container>
+    
+      <!-- Content column -->
+      <ng-container matColumnDef="content">
+        <th mat-header-cell *matHeaderCellDef> Content </th>
+        <td mat-cell *matCellDef="let item"> {{ item.content }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let item"> {{ item.status | textualStatus | titlecase}} </td>
+      </ng-container>
+  
+      <!-- Operation column -->
+      <ng-container matColumnDef="operations">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let index = index">
+          <button mat-icon-button matTooltip="Detail"
+              (click)="openDialog('view', index)">
+            <mat-icon>description</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Update"
+              (click)="openDialog('update', index)">
+            <mat-icon>update</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Delete"
+              (click)="openDialog('remove', index)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+#div-event-checklist{
+  #div-event-checklist-table {
+    width: 100%;
+
+    table {
+      width: 100%;
+
+      th, td {
+        overflow: hidden;
+        max-width: 100px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+#div-event-checklist-dialog {
+  .checklist-dialog {
+    .radio-group{
+      label {
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+      }
+      mat-radio-button {
+        margin: 0.3em;
+      }
+    }
+  }
+}
+
+

@@ -8,12 +8,17 @@ import { EventsRoutingModule } from './events-routing.module';
 import { AddEventComponent } from './add-event/add-event.component';
 import { EventFormComponent } from './event-form/event-form.component';
 import { EventSchedulerComponent } from './event-scheduler/event-scheduler.component';
-import { 
+import {
   EventNotificationComponent,
   EventNotificationFreqDialog
 } from './event-notification/event-notification.component';
 
 import { DateSuffixPipe } from './date-suffix.pipe';
+import {
+  EventChecklistComponent,
+  EventChecklistDialog
+} from './event-checklist/event-checklist.component';
+import { TextualStatusPipe } from './textual-status.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +27,10 @@ import { DateSuffixPipe } from './date-suffix.pipe';
     EventSchedulerComponent,
     EventNotificationComponent,
     EventNotificationFreqDialog,
-    DateSuffixPipe
+    DateSuffixPipe,
+    EventChecklistComponent,
+    EventChecklistDialog,
+    TextualStatusPipe
   ],
   imports: [
     CommonModule,
@@ -32,7 +40,8 @@ import { DateSuffixPipe } from './date-suffix.pipe';
     ReactiveFormsModule
   ],
   entryComponents: [
-    EventNotificationFreqDialog
+    EventNotificationFreqDialog,
+    EventChecklistDialog
   ]
 })
 export class EventsModule { }
