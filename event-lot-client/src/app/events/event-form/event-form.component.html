@@ -54,16 +54,28 @@
       <mat-expansion-panel #step2>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Event lifecycle
+            Event checklist
           </mat-panel-title>
         </mat-expansion-panel-header>
-	<app-event-scheduler></app-event-scheduler>
+	<app-event-checklist></app-event-checklist>
 	<div class="buttons-panel">
           <button mat-raised-button (click)="step1.open()"> Back to event metadata</button>
           <button mat-raised-button (click)="step3.open()"> To event notification setting</button>
         </div>
       </mat-expansion-panel>
       <mat-expansion-panel #step3>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Event lifecycle
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+	<app-event-scheduler></app-event-scheduler>
+	<div class="buttons-panel">
+          <button mat-raised-button (click)="step2.open()"> Back to event metadata</button>
+          <button mat-raised-button (click)="step4.open()"> To event notification setting</button>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel #step4>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Event notification

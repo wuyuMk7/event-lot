@@ -1,0 +1,59 @@
+<div id="div-event-checklist-dialog" [ngSwitch]="data.type">
+  <div class="checklist-dialog" *ngSwitchCase="'add'">
+    <h1 mat-dialog-title> Add item to checklist </h1>
+    <div mat-dialog-content fxLayout="column">
+      <mat-form-field>
+        <textarea matInput placeholder="Content" cdkFocusInitial
+            [(ngModel)]="retnData.content"></textarea>
+      </mat-form-field>
+      <div fxLayout.xs="column" class="radio-group">
+        <label> Item status: </label>
+        <mat-radio-group [(ngModel)]="retnData.status">
+          <mat-radio-button value="ongoing"> Ongoing </mat-radio-button>
+          <mat-radio-button value="checked"> Checked </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="checklist-dialog" *ngSwitchCase="'update'">
+    <h1 mat-dialog-title> Modify checklist item </h1>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <textarea matInput placeholder="Content" [(ngModel)]="retnData.content"></textarea>
+      </mat-form-field>
+      <div fxLayout.xs="column" class="radio-group">
+        <label> Item status: </label>
+        <mat-radio-group [(ngModel)]="retnData.status">
+          <mat-radio-button value="ongoing"> Ongoing </mat-radio-button>
+          <mat-radio-button value="checked"> Checked </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="checklist-dialog" *ngSwitchCase="'view'">
+    <h1 mat-dialog-title> Checklist item detail </h1>
+    <div mat-dialog-content>
+      <p> {{ retnData.content }} </p>
+      <p> Current status: {{ retnData.status }} </p>
+    </div>
+  </div>
+  <div class="checklist-dialog" *ngSwitchCase="'remove'">
+    <h1 mat-dialog-title> Confirm deletion </h1>
+    <div mat-dialog-content>
+      <p> Delete selected items? </p>
+    </div>
+  </div>
+  <div class="checklist-dialog" *ngSwitchDefault>
+  </div>
+
+  <div mat-dialog-actions *ngIf="data.type === 'remove'; else focusOK">
+    <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+    <button mat-button (click)="submit()">OK</button>
+  </div>
+  <ng-template #focusOK>
+    <div mat-dialog-actions>
+      <button mat-button (click)="cancel()">Cancel</button>
+      <button mat-button (click)="submit()" cdkFocusInitial>OK</button>
+    </div>
+  </ng-template>
+</div>
