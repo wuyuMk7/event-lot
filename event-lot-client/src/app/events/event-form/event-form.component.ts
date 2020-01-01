@@ -26,7 +26,7 @@ export class EventFormComponent implements OnInit {
   tagsSelectable = false;
   readonly separatorKeyCodes: number[] = [ ENTER, COMMA ];
 
-  constructor(private _formBuilder: FormBuilder) { 
+  constructor(private _formBuilder: FormBuilder) {
     this.eventCreationFormGroup = this._formBuilder.group({
       group: [''],
       topic: ['', Validators.required],
@@ -41,21 +41,21 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log(this);
+    //console.log(this);
   }
 
   addTag(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
-    if (this.eventTags.length >= 5) 
+    if (this.eventTags.length >= 5)
       return;
     if ((value || '').trim())
       this.eventTags.push(value);
     if (input)
       input.value = '';
   }
-  
+
   removeTag(eventTag: string): void {
     const index = this.eventTags.indexOf(eventTag);
     if (index >= 0)
