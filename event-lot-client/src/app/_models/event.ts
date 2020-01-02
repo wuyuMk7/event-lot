@@ -1,5 +1,5 @@
 export enum EventStatus { Pending, Ongoing, Checked };
-export enum PeriodicMode { Year, Month, Week, Day };
+export enum RepeatMode { Year, Month, Week, Day };
 
 export class ChecklistItem {
   content: string;
@@ -28,5 +28,6 @@ export class Event {
   checklist: ChecklistItem[];
 
   repeat: boolean;
+  repeat_mode: RepeatMode;
   period: [number, number];
 }
