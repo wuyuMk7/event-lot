@@ -30,15 +30,16 @@
         </form>
       </mat-step>
   <mat-step [stepControl]="secondStep">
-    <app-event-form [eventMode]="firstStep.value.ownerTypeCtrl"
-		    [groupID]="firstStep.value.ownerGroupNameCtrl"></app-event-form>
-    <form [formGroup]="secondStep">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
+    <ng-template matStepLabel>Fill out your address</ng-template>
+    <app-event-form 
+        #eventForm
+        [eventMode]="firstStep.value.ownerTypeCtrl"
+		    [groupID]="firstStep.value.ownerGroupNameCtrl"
+        (transmit)="receiveChildData($event)"></app-event-form>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
+    </div>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>

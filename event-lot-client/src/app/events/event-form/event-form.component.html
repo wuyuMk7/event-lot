@@ -27,11 +27,11 @@
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
               <input placeholder="Tags (optional, at most 5 tags)" 
-            	 formControlName="tags"
-                     [matChipInputFor]="tagsList"
-            	 [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-            	 [matChipInputAddOnBlur]="addOnBlur"
-            	 (matChipInputTokenEnd)="addTag($event)">
+            	  formControlName="tags"
+                [matChipInputFor]="tagsList"
+            	  [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+            	  [matChipInputAddOnBlur]="addOnBlur"
+            	  (matChipInputTokenEnd)="addTag($event)">
             </mat-chip-list>
           </mat-form-field>
           <mat-form-field>
@@ -47,7 +47,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-	<div class="buttons-panel">
+	      <div class="buttons-panel">
           <button mat-raised-button (click)="step2.open()"> To event lifecycle setting</button>
         </div>
       </mat-expansion-panel>
@@ -57,8 +57,10 @@
             Event checklist
           </mat-panel-title>
         </mat-expansion-panel-header>
-	<app-event-checklist></app-event-checklist>
-	<div class="buttons-panel">
+	      <app-event-checklist 
+          (transmit)="receiveChildData($event)" 
+          #eventChecklist></app-event-checklist>
+	      <div class="buttons-panel">
           <button mat-raised-button (click)="step1.open()"> Back to event metadata</button>
           <button mat-raised-button (click)="step3.open()"> To event notification setting</button>
         </div>
@@ -69,8 +71,10 @@
             Event lifecycle
           </mat-panel-title>
         </mat-expansion-panel-header>
-	<app-event-scheduler></app-event-scheduler>
-	<div class="buttons-panel">
+	      <app-event-scheduler 
+          (transmit)="receiveChildData($event)" 
+          #eventScheduler></app-event-scheduler>
+	      <div class="buttons-panel">
           <button mat-raised-button (click)="step2.open()"> Back to event metadata</button>
           <button mat-raised-button (click)="step4.open()"> To event notification setting</button>
         </div>
@@ -81,10 +85,11 @@
             Event notification
           </mat-panel-title>
         </mat-expansion-panel-header>
-	<app-event-notification></app-event-notification>
+	      <app-event-notification 
+          (transmit)="receiveChildData($event)" 
+          #eventNotification></app-event-notification>
       </mat-expansion-panel>
     </mat-accordion>
   </form>
 </div>
-
 
