@@ -19,18 +19,27 @@
       {{ selectedDaysForFreq.week.join(', ') }}
       <button mat-button color="primary" (click)="openDialog({value: 'week'})"> Modify </button>
     </div>
+    <mat-error *ngIf="eventNotificationGroup.controls.frequency.hasError('daysOfWeekError')">
+      Days of week is required.
+    </mat-error>
 
     <mat-radio-button value="month" #radioMonthItem> every month on </mat-radio-button>
     <div *ngIf="radioMonthItem.checked">
       {{ selectedDaysForFreq.month.join(', ') }}
       <button mat-button color="primary" (click)="openDialog({value: 'month'})"> Modify </button>
     </div>
+    <mat-error *ngIf="eventNotificationGroup.controls.frequency.hasError('daysOfMonthError')">
+      Days of month is required.
+    </mat-error>
 
     <mat-radio-button value="year" #radioYearItem> every year on </mat-radio-button>
     <div *ngIf="radioYearItem.checked">
       {{ selectedDaysForFreq.year.join(', ') }}
       <button mat-button color="primary" (click)="openDialog({value: 'year'})"> Modify </button>
     </div>
+    <mat-error *ngIf="eventNotificationGroup.controls.frequency.hasError('daysOfYearError')">
+      Days of year is required.
+    </mat-error>
   </mat-radio-group>
   </div>
 

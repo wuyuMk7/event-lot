@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild,
+  EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl,
 	 Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
@@ -28,6 +29,7 @@ const allDaysOfEachMonth: string[] = [
 })
 
 export class EventNotificationComponent implements OnInit {
+  @Output() transmit = new EventEmitter<any>();
   eventNotificationGroup: FormGroup;
 
   selectedDaysForFreq = { week: [], month: [], year: [] };
@@ -38,11 +40,32 @@ export class EventNotificationComponent implements OnInit {
   ) {
     this.eventNotificationGroup = this._formBuilder.group({
       switch: ['on', Validators.required],
-      frequency: ['day', Validators.required]
+      frequency: ['day', [Validators.required, this._anotherRequiredValidator()]]
     });
   }
 
   ngOnInit() {
+  }
+
+  checkValid(id: string): boolean {
+    let ret = false;
+    if (this.eventNotificationGroup.value.switch == 'off') {
+      this.transmit.emit({ child: id, data: { switch: 'off' } });
+      ret = true;
+    } else if (this.eventNotificationGroup.valid) {
+      let data = {
+        switch: 'on',
+        type: this.eventNotificationGroup.value.frequency
+      };
+
+      if (data.type !== 'day' && this.selectedDaysForFreq[data.type])
+        data['freq'] = this.selectedDaysForFreq[data.type];
+
+      this.transmit.emit({ child: id, data: data });
+      ret = true;
+    }
+
+    return ret;
   }
 
   openDialog(event: any): void {
@@ -60,7 +83,22 @@ export class EventNotificationComponent implements OnInit {
       if (result === undefined)
         result = [];
       this.selectedDaysForFreq[type] = result;
+      this.eventNotificationGroup.get('frequency').updateValueAndValidity();
     })
+  }
+
+  private _anotherRequiredValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      let ret = null;
+      if (control.value === 'week' && this.selectedDaysForFreq.week.length == 0)
+        ret = { daysOfWeekError: true };
+      else if (control.value === 'month' && this.selectedDaysForFreq.month.length == 0)
+        ret = { daysOfMonthError: true };
+      else if (control.value === 'year' && this.selectedDaysForFreq.year.length == 0)
+        ret = { daysOfYearError: true };
+
+        return ret;
+    }
   }
 }
 
