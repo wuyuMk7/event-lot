@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, 
+import { FormBuilder, FormControl, FormGroup,
          Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -19,11 +19,13 @@ export class AddEventComponent implements OnInit {
   ownerGroups: string[] = ['fffff', 'kkkk'];
   filteredOwnerGroups: Observable<string[]>;
 
+  eventFormData: any;
+
   constructor(private _formBuilder: FormBuilder) {
     this.ownerGroupSelectionControl = new FormControl();
 
     this.filteredOwnerGroups = this.ownerGroupSelectionControl.valueChanges.pipe(
-      startWith(''), 
+      startWith(''),
       map(group => group ? this._filterOwnerGroups(group) : this.ownerGroups.slice())
     );
   }
@@ -36,9 +38,12 @@ export class AddEventComponent implements OnInit {
       validator: this._customValidatorOnGroupName()
     });
 
-    this.secondStep = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
-    });
+    this.secondStep = this._formBuilder.group({});
+  }
+
+  receiveChildData(event: any): void {
+    this.eventFormData = event;
+    console.log(this.eventFormData);
   }
 
   private _filterOwnerGroups(value: string): string[] {
