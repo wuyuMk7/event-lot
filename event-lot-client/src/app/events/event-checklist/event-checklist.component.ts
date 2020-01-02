@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject,
+  Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -13,6 +14,8 @@ import { ChecklistItem, EventStatus } from '../../_models/event';
 })
 
 export class EventChecklistComponent implements OnInit {
+  @Output() transmit = new EventEmitter<any>();
+
   displayedColumns: string[] = ['select', 'index', 'content', 'status', 'operations'];
   checklist: ChecklistItem[] = [];
   dataSource = new MatTableDataSource<ChecklistItem>(this.checklist);
@@ -50,6 +53,12 @@ export class EventChecklistComponent implements OnInit {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row`;
+  }
+
+  checkValid(id: string): boolean {
+    if (this.checklist.length >= 0)
+      this.transmit.emit({ child: id, data: { checklist: this.checklist } });
+    return true;
   }
 
   openDialog(type: string, event: any) {
