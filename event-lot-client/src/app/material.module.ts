@@ -17,6 +17,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatPaginatorModule,
   MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
@@ -53,6 +54,7 @@ import {
     MatInputModule,
     MatListModule,
     MatMomentDateModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
@@ -81,6 +83,7 @@ import {
     MatInputModule,
     MatListModule,
     MatMomentDateModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
@@ -91,8 +94,8 @@ import {
     MatTooltipModule
   ],
   providers: [
-    { 
-      provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, 
+    {
+      provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS,
       useValue: { strict: true }
     }
   ]

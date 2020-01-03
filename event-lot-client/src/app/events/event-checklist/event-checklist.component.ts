@@ -106,9 +106,12 @@ export class EventChecklistComponent implements OnInit {
         if (extra.reset && extra.reset == 'selection')
           this.selection.clear();
       }
+      console.log(this.checklist);
 
-      if (type != 'view')
+      if (type != 'view') {
         this.table.renderRows();
+        this.dataSource.paginator = this.paginator;
+      }
     });
   }
 
