@@ -13,32 +13,29 @@ export class AddEventComponent implements OnInit {
   firstStep: FormGroup;
   secondStep: FormGroup;
   lastStep: FormGroup;
-  ownerGroupSelectionControl: FormControl;
 
   ownerTypes: string[] = ['Yourself', 'Group'];
-  ownerGroups: string[] = ['fffff', 'kkkk'];
+  ownerGroups: string[] = ['fffff', 'kkkk','a','b','c','d','e'];
   filteredOwnerGroups: Observable<string[]>;
 
   eventFormData: any;
 
   constructor(private _formBuilder: FormBuilder) {
-    this.ownerGroupSelectionControl = new FormControl();
-
-    this.filteredOwnerGroups = this.ownerGroupSelectionControl.valueChanges.pipe(
-      startWith(''),
-      map(group => group ? this._filterOwnerGroups(group) : this.ownerGroups.slice())
-    );
-  }
-
-  ngOnInit() {
     this.firstStep = this._formBuilder.group({
       ownerTypeCtrl: ['Yourself', Validators.required],
       ownerGroupNameCtrl: ['']
     }, {
       validator: this._customValidatorOnGroupName()
     });
-
     this.secondStep = this._formBuilder.group({});
+  }
+
+  ngOnInit() {
+    this.filteredOwnerGroups = this.firstStep.controls.ownerGroupNameCtrl
+      .valueChanges.pipe(
+        startWith(''),
+        map(group => group ? this._filterOwnerGroups(group) : this.ownerGroups.slice())
+      );
   }
 
   receiveChildData(event: any): void {
@@ -52,13 +49,16 @@ export class AddEventComponent implements OnInit {
   }
 
   private _customValidatorOnGroupName(): ValidatorFn {
-    return (control: FormGroup): ValidationErrors | null => {
-      let vals = control.value;
-      let toBeChecked = vals.ownerTypeCtrl === 'Group';
-      let isEmpty = vals.ownerGroupNameCtrl == null || vals.ownerGroupNameCtrl.length === 0;
-      let isInGroups = this.ownerGroups.includes(vals.ownerGroupNameCtrl);
+    return (fg: FormGroup): ValidationErrors | null => {
+      const control = fg.controls.ownerGroupNameCtrl;
+      if (fg.value.ownerTypeCtrl === 'Group') {
+        if (control.value == null || control.value.length === 0)
+          control.setErrors({ groupNameEmptyError: true });
+        else if (!this.ownerGroups.includes(control.value))
+          control.setErrors({ groupNameInvalidError: true });
+      }
 
-      return toBeChecked ? ((!isEmpty && isInGroups) ? null: {groupNameError: true}): null;
+      return null;
     }
   }
 }

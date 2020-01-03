@@ -22,6 +22,12 @@
                   {{ ownerGroup }}
                 </mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameEmptyError')">
+                Please select a group from the list. If you don't have any group please use another option.
+              </mat-error>
+              <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameInvalidError')">
+                Invalid group name. Please select a group from the list.
+              </mat-error>
             </mat-form-field>
           </div>
           <div>
