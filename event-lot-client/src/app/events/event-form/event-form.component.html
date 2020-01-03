@@ -1,7 +1,7 @@
 <div id="div-events-form"> 
   <form> 
     <mat-accordion>
-      <mat-expansion-panel expanded="true" #step1>
+      <mat-expansion-panel expanded="true" #step1 class="step1">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Event metadata
@@ -25,19 +25,28 @@
           <mat-form-field>
             <mat-chip-list #tagsList aria-label="Tags">
               <mat-chip *ngFor="let eventTag of eventTags" 
-            	    [removable]="tagsRemovable" 
-            	    [selectable]="tagsSelectable" 
-            	    (removed)="removeTag(eventTag)">
+                  [removable]="tagsRemovable" 
+                  [selectable]="tagsSelectable" 
+                  (removed)="removeTag(eventTag)">
                 {{ eventTag }}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
-              <input placeholder="Tags (optional, at most 5 tags)" 
-            	  formControlName="tags"
+              <input placeholder="Tags" 
+                formControlName="tags"
                 [matChipInputFor]="tagsList"
-            	  [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-            	  [matChipInputAddOnBlur]="addOnBlur"
-            	  (matChipInputTokenEnd)="addTag($event)">
+                [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addTag($event)">
             </mat-chip-list>
+            <mat-hint>
+              Optional, at most 5 tags. Press "Enter" to post a tag.
+            </mat-hint>
+            <mat-error *ngIf="eventCreationFormGroup.controls.tags.hasError('tagsOverLimitError')">
+              At most 5 tags.
+            </mat-error>
+            <mat-error *ngIf="eventCreationFormGroup.controls.tags.hasError('tagsOverLenError')">
+              Each tag has at most 20 characters.
+            </mat-error>
           </mat-form-field>
           <mat-form-field>
             <textarea matInput placeholder="Content" formControlName="content"></textarea>
@@ -63,9 +72,6 @@
             </mat-error>
           </mat-form-field>
         </div>
-	      <div class="buttons-panel">
-          <button mat-raised-button (click)="step2.open()"> To event lifecycle setting</button>
-        </div>
       </mat-expansion-panel>
       <mat-expansion-panel #step2>
         <mat-expansion-panel-header>
@@ -76,10 +82,6 @@
 	      <app-event-checklist 
           (transmit)="receiveChildData($event)" 
           #eventChecklist></app-event-checklist>
-	      <div class="buttons-panel">
-          <button mat-raised-button (click)="step1.open()"> Back to event metadata</button>
-          <button mat-raised-button (click)="step3.open()"> To event notification setting</button>
-        </div>
       </mat-expansion-panel>
       <mat-expansion-panel #step3>
         <mat-expansion-panel-header>
@@ -90,10 +92,6 @@
 	      <app-event-scheduler 
           (transmit)="receiveChildData($event)" 
           #eventScheduler></app-event-scheduler>
-	      <div class="buttons-panel">
-          <button mat-raised-button (click)="step2.open()"> Back to event metadata</button>
-          <button mat-raised-button (click)="step4.open()"> To event notification setting</button>
-        </div>
       </mat-expansion-panel>
       <mat-expansion-panel #step4>
         <mat-expansion-panel-header>

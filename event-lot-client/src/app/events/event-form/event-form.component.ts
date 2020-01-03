@@ -6,7 +6,7 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { map, startWith } from 'rxjs/operators';
 
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatChipList, MatChipInputEvent } from '@angular/material/chips';
 import { MatDatepicker } from '@angular/material/datepicker';
 
 import * as moment from 'moment-timezone';
@@ -42,6 +42,8 @@ export class EventFormComponent implements OnInit {
   @ViewChild('eventScheduler', { static: false }) childSch: EventSchedulerComponent;
   @ViewChild('eventNotification', { static: false }) childNotify: EventNotificationComponent;
 
+  @ViewChild('tagsList', { static: true }) tagChipList: MatChipList;
+
   childrenData: any = {};
   childrenNames: string[] = [ 'step1', 'step2', 'step3', 'step4' ];
   childrenNameRelations: any = {
@@ -72,13 +74,15 @@ export class EventFormComponent implements OnInit {
       group: [''],
       topic: ['', [Validators.required, Validators.maxLength(60)]],
       content: ['', Validators.required],
-      tags: ['', this._customValidatorOnTagsList(5)],
+      tags: [''],
       timezone: [
         this.timezones[this._findTimezoneIndex(moment.tz.guess())].desc,
         [Validators.required, this._customValidatorOnTimezone()]
       ]
     });
 
+    this.eventCreationFormGroup.controls.tags.setValidators(
+      this._customValidatorOnTagsList(5, 20));
   }
 
   ngOnInit() {
@@ -152,12 +156,16 @@ export class EventFormComponent implements OnInit {
       this.eventTags.push(value);
     if (input)
       input.value = '';
+
+    this.eventCreationFormGroup.controls.tags.updateValueAndValidity();
   }
 
   removeTag(eventTag: string): void {
     const index = this.eventTags.indexOf(eventTag);
     if (index >= 0)
       this.eventTags.splice(index, 1);
+
+    this.eventCreationFormGroup.controls.tags.updateValueAndValidity();
   }
 
   private _findTimezoneIndex(tzName: string): number {
@@ -170,9 +178,26 @@ export class EventFormComponent implements OnInit {
     return this.timezones.filter(tz => tz.desc.toLowerCase().indexOf(tar) === 0);
   }
 
-  private _customValidatorOnTagsList(maximumVal: number): ValidatorFn {
+  private _customValidatorOnTagsList(maxCnt: number, maxLength: number): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
-      return this.eventTags.length >= maximumVal ? { noMoreTags: true } : null;
+      let ret = null;
+      this.tagChipList.errorState = true;
+
+      if (this.eventTags.length > maxCnt) {
+        ret = { tagsOverLimitError: true };
+      } else {
+        for (let tag of this.eventTags) {
+          if (tag.length > maxLength) {
+            ret = { tagsOverLenError: true };
+            break;
+          }
+        }
+      }
+
+      if (ret == null)
+        this.tagChipList.errorState = false;
+
+      return ret;
     }
   }
 
