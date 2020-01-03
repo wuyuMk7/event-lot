@@ -56,6 +56,8 @@ export class AddEventComponent implements OnInit {
           control.setErrors({ groupNameEmptyError: true });
         else if (!this.ownerGroups.includes(control.value))
           control.setErrors({ groupNameInvalidError: true });
+      } else {
+        control.setErrors(null);
       }
 
       return null;
