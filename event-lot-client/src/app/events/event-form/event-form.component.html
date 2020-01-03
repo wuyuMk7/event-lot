@@ -16,6 +16,11 @@
             <mat-error *ngIf="eventCreationFormGroup.controls.topic.hasError('required')">
               Topic is required.
             </mat-error>
+            <mat-error *ngIf="eventCreationFormGroup.controls.topic.hasError('maxlength')">
+              Topic has at most 
+              {{ eventCreationFormGroup.controls.topic.errors.maxlength.requiredLength }}
+              characters.
+            </mat-error>
           </mat-form-field>
           <mat-form-field>
             <mat-chip-list #tagsList aria-label="Tags">
@@ -41,9 +46,20 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Timezone" formControlName="timezone">
+            <input matInput
+              placeholder="Timezone" 
+              formControlName="timezone" 
+              [matAutocomplete]="autotz">
+            <mat-autocomplete #autotz="matAutocomplete">
+              <mat-option *ngFor="let timezone of filteredTimezones | async" [value]="timezone.desc">
+                {{ timezone.desc }}
+              </mat-option>
+            </mat-autocomplete>
             <mat-error *ngIf="eventCreationFormGroup.controls.timezone.hasError('required')">
               Timezone is required.
+            </mat-error>
+            <mat-error *ngIf="eventCreationFormGroup.controls.timezone.hasError('tzInvalidError')">
+              Timezone is invalid. Please select one from the list.
             </mat-error>
           </mat-form-field>
         </div>

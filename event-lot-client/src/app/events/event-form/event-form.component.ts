@@ -3,10 +3,13 @@ import { Component, OnInit, OnChanges, Output, EventEmitter,
 import { FormBuilder, FormControl, FormGroup, AbstractControl,
   Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { map, startWith } from 'rxjs/operators';
 
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDatepicker } from '@angular/material/datepicker';
+
+import * as moment from 'moment-timezone';
 
 import {
   EventChecklistComponent
@@ -53,18 +56,38 @@ export class EventFormComponent implements OnInit {
   tagsSelectable = false;
   readonly separatorKeyCodes: number[] = [ ENTER, COMMA ];
 
+  timezones: any = { name: [], desc: [] };
+  filteredTimezones: any;
+
   constructor(private _formBuilder: FormBuilder) {
+    // this.timezones.name = moment.tz.names();
+    // this.timezones.desc = this.timezones.name
+    //   .map(name => name + ', ' + moment.tz(name).format('[GMT]Z, z')) ;
+
+    this.timezones = moment.tz.names().map((name) => {
+      return { name: name, desc: name + ', ' + moment.tz(name).format('[GMT]Z, z') };
+    });
+
     this.eventCreationFormGroup = this._formBuilder.group({
       group: [''],
-      topic: ['', Validators.required],
+      topic: ['', [Validators.required, Validators.maxLength(60)]],
       content: ['', Validators.required],
       tags: ['', this._customValidatorOnTagsList(5)],
-      timezone: ['', Validators.required]
+      timezone: [
+        this.timezones[this._findTimezoneIndex(moment.tz.guess())].desc,
+        [Validators.required, this._customValidatorOnTimezone()]
+      ]
     });
+
   }
 
   ngOnInit() {
     this.eventCreationFormGroup.controls.group.disable();
+    this.filteredTimezones = this.eventCreationFormGroup.controls.timezone.valueChanges
+      .pipe(
+        startWith(''),
+        map(name => name ? this._filterTimezones(name): this.timezones.slice())
+      );
   }
 
   ngOnChanges() {
@@ -137,9 +160,26 @@ export class EventFormComponent implements OnInit {
       this.eventTags.splice(index, 1);
   }
 
+  private _findTimezoneIndex(tzName: string): number {
+    return this.timezones.findIndex(tz => tz.name == tzName);
+  }
+
+  private _filterTimezones(name: string): any{
+    const tar = name.toLowerCase();
+
+    return this.timezones.filter(tz => tz.desc.toLowerCase().indexOf(tar) === 0);
+  }
+
   private _customValidatorOnTagsList(maximumVal: number): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
       return this.eventTags.length >= maximumVal ? { noMoreTags: true } : null;
+    }
+  }
+
+  private _customValidatorOnTimezone(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const index = this.timezones.findIndex(tz => tz.desc == control.value);
+      return index >= 0 ? null : { tzInvalidError: true };
     }
   }
 }
