@@ -1,6 +1,7 @@
 #div-events-form {
-  padding: 1%;
-  * {
-    width: 100%; 
+  mat-expansion-panel.step1 {
+    mat-form-field {
+      width: 100%;
+    }
   }
 }
