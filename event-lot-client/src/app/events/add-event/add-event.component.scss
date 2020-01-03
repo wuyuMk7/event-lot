@@ -1,7 +1,29 @@
+$xs-max: 599px;
+
 #div-events-add-event {
-  .stepper {
-    .content {
-      margin-top: 1em;
+  .first-step {
+    mat-radio-group {
+      padding-left: 1.5em;
+
+      .owner-types {
+        margin-top: 0.3em;
+        margin-bottom: 0.5em;
+      }
     }
+
+    mat-form-field {
+      width: 40%;
+      @media screen and (max-width: $xs-max) {
+        width: 80%;
+      }
+
+      padding: 0 1.5em 1.5em 2em;
+      margin-top: 0.3em;
+    }
+  }
+
+  .step-button-panel {
+    margin-top: 1em;
+    padding-left: 1em;
   }
 }

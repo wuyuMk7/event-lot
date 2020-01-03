@@ -2,59 +2,66 @@
   <div class="stepper">
     <mat-horizontal-stepper linear #stepper>
       <mat-step [stepControl]="firstStep">
-        <form [formGroup]="firstStep">
-          <ng-template matStepLabel>Create an event for: </ng-template>
-          <div class="content">
-            <mat-radio-group formControlName="ownerTypeCtrl" fxLayout="column" fxLayoutAlign="space-around">
-              <mat-radio-button class="owner-types" *ngFor="let type of ownerTypes" [value]="type">
-                {{ type }}
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div *ngIf="firstStep.value.ownerTypeCtrl === 'Group'">
-            <mat-form-field class="owner-groups">
-              <input type="text" placeholder="Pick one group" 
-                     aria-label="OwnerGroupName" matInput 
-                     formControlName="ownerGroupNameCtrl" 
-                     [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let ownerGroup of filteredOwnerGroups | async" [value] = "ownerGroup">
-                  {{ ownerGroup }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameEmptyError')">
-                Please select a group from the list. If you don't have any group please use another option.
-              </mat-error>
-              <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameInvalidError')">
-                Invalid group name. Please select a group from the list.
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <div>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </form>
+        <div class="first-step">
+          <form [formGroup]="firstStep">
+            <ng-template matStepLabel> Event Owner </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-subtitle>Create an event for: </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-radio-group formControlName="ownerTypeCtrl" fxLayout="column" fxLayoutAlign="space-around">
+                  <mat-radio-button class="owner-types" *ngFor="let type of ownerTypes" [value]="type">
+                    {{ type }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="firstStep.value.ownerTypeCtrl === 'Group'">
+                  <mat-form-field class="owner-groups">
+                    <input type="text" placeholder="Pick one group" 
+                           aria-label="OwnerGroupName" matInput 
+                           formControlName="ownerGroupNameCtrl" 
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let ownerGroup of filteredOwnerGroups | async" [value] = "ownerGroup">
+                        {{ ownerGroup }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameEmptyError')">
+                      Please select a group from the list. If you don't have any group please use another option.
+                    </mat-error>
+                    <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameInvalidError')">
+                      Invalid group name. Please select a group from the list.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <div class="step-button-panel">
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </div>
       </mat-step>
-  <mat-step [stepControl]="secondStep">
-    <ng-template matStepLabel>Fill out your address</ng-template>
-    <app-event-form 
-        #eventForm
-        [eventMode]="firstStep.value.ownerTypeCtrl"
-		    [groupID]="firstStep.value.ownerGroupNameCtrl"
-        (transmit)="receiveChildData($event)"></app-event-form>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper> 
+      <mat-step [stepControl]="secondStep">
+        <ng-template matStepLabel> Event Details </ng-template>
+        <app-event-form 
+            #eventForm
+            [eventMode]="firstStep.value.ownerTypeCtrl"
+	    	    [groupID]="firstStep.value.ownerGroupNameCtrl"
+            (transmit)="receiveChildData($event)"></app-event-form>
+        <div class="step-button-panel">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div class="step-button-panel">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper> 
   </div>
 </div>
