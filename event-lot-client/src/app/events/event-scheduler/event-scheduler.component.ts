@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl,
 	       Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-event-scheduler',
@@ -15,8 +16,8 @@ export class EventSchedulerComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder) {
     this.eventScheduleGroup = this._formBuilder.group({
       type: ['range', Validators.required],
-      startdate: [new Date(Date.now()), Validators.required],
-      enddate: [new Date(Date.now()), Validators.required]
+      startdate: [moment(), Validators.required],
+      enddate: [moment(), Validators.required]
     }, { validator: this._dateRangeValidator() });
   }
 

@@ -1,0 +1,16 @@
+#div-event-scheduler {
+  mat-radio-group {
+    mat-hint {
+      margin: 0.3em 0;
+      padding-left: 2em;
+    }
+
+    .form-fields {
+      padding-left: 2em;
+
+      mat-form-field {
+        margin: 0.3em 1em 0.3em 0;
+      }
+    }
+  }
+}

@@ -42,7 +42,7 @@
           </form>
         </div>
       </mat-step>
-      <mat-step [stepControl]="secondStep">
+      <mat-step [stepControl]="secondStep" [completed]="isSecondStepDone">
         <ng-template matStepLabel> Event Details </ng-template>
         <app-event-form 
             #eventForm
@@ -55,8 +55,8 @@
         </div>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        You are now done.
+        <ng-template matStepLabel>Event summary</ng-template>
+        <app-event-summary [eventFormData]="eventFormData"></app-event-summary>
         <div class="step-button-panel">
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button (click)="stepper.reset()">Reset</button>

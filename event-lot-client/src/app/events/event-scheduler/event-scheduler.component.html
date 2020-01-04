@@ -1,11 +1,12 @@
-<div class="div-event-scheduler">
+<div id="div-event-scheduler">
   <div class="form-fields" fxLayout="column" fxLayoutAlign="space-around" [formGroup]="eventScheduleGroup">
     <mat-radio-group formControlName="type" 
       (change)="toggleValidator($event)"
       fxLayout="column" fxLayoutAlign="space-around">
       <mat-radio-button value="range"> One-time event </mat-radio-button>
       <mat-hint> A one-time event happens in a specific date range and can be checked.</mat-hint>
-      <div class="form-fields" *ngIf="eventScheduleGroup.value.type === 'range'">
+      <div class="form-fields" fxLayout="row" fxLayout.xs="column"
+        *ngIf="eventScheduleGroup.value.type === 'range'">
         <mat-form-field>
           <input matInput
                  [matDatepicker]="startDatePicker" 

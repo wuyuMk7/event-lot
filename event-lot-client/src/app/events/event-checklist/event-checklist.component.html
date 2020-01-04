@@ -1,6 +1,8 @@
 <div id="div-event-checklist" fxLayout="column" fxLayoutAlign="space-around start">
-  <button mat-button (click)="openDialog('add', $event)"> Add a checklist item </button>
-  <button mat-button (click)="deleteItems()"> Delete items </button>
+  <div class="items-button-panel" fxLayout="row" fxLayout.xs="column">
+    <button mat-button color="primary" (click)="openDialog('add', $event)"> Add an item </button>
+    <button mat-button color="warn" (click)="deleteItems()"> Delete items </button>
+  </div>
   <div id="div-event-checklist-table" class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="select">

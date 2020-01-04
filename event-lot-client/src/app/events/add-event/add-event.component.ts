@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup,
          Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -13,6 +13,8 @@ export class AddEventComponent implements OnInit {
   firstStep: FormGroup;
   secondStep: FormGroup;
   lastStep: FormGroup;
+
+  isSecondStepDone = false;
 
   ownerTypes: string[] = ['Yourself', 'Group'];
   ownerGroups: string[] = ['fffff', 'kkkk','a','b','c','d','e'];

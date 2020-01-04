@@ -1,0 +1,28 @@
+#div-event-notification {
+  .switch {
+    mat-radio-group {
+      mat-hint {
+        margin: 0.3em 0;
+        padding-left: 2em;
+      }
+    }
+  }
+  .frequency {
+    mat-radio-group {
+      mat-label {
+        margin: 1em 0;
+      }
+      mat-radio-button {
+        margin: 0.1em 0;
+      }
+
+      .freq-data {
+        padding-left: 2em;
+      }
+      mat-error {
+        margin: 0.25em 0;
+        padding-left: 2em;
+      }
+    }
+  }
+}

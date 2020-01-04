@@ -90,7 +90,11 @@ export class EventChecklistComponent implements OnInit {
 
   private _openDialog(type: string, value: any, extra: any) {
     const dialogRef = this._checklistDialog.open(
-      EventChecklistDialog, { data: { type: type, value: value }}
+      EventChecklistDialog,
+      {
+        minWidth: '50%',
+        data: { type: type, value: value }
+      }
     );
     dialogRef.afterClosed().subscribe(result => {
       if (type === 'add' && result && result.content && result.status) {
@@ -106,7 +110,7 @@ export class EventChecklistComponent implements OnInit {
         if (extra.reset && extra.reset == 'selection')
           this.selection.clear();
       }
-      console.log(this.checklist);
+      //console.log(this.checklist);
 
       if (type != 'view') {
         this.table.renderRows();
