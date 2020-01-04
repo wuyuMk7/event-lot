@@ -42,7 +42,7 @@
           </form>
         </div>
       </mat-step>
-      <mat-step [stepControl]="secondStep">
+      <mat-step [stepControl]="secondStep" [completed]="isSecondStepDone">
         <ng-template matStepLabel> Event Details </ng-template>
         <app-event-form 
             #eventForm
