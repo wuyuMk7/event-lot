@@ -1,15 +1,39 @@
 #div-event-checklist{
+  .items-button-panel {
+    margin-bottom: 0.5em;
+    button {
+      margin-right: 1em;
+      margin-bottom: 0.5em;
+    }
+  }
+
   #div-event-checklist-table {
     width: 100%;
 
     table {
       width: 100%;
+      table-layout: fixed;
 
       th, td {
         overflow: hidden;
-        max-width: 100px;
+        width: auto;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .mat-column-select {
+        width: 30px;
+      }
+
+      .mat-column-index {
+        width: 35px;
+      }
+
+      .mat-column-status {
+        width: 70px;
+      }
+      .mat-column-operations {
+        width: 120px;
       }
     }
   }

@@ -77,7 +77,7 @@ export class EventNotificationComponent implements OnInit {
 
     const value = this.selectedDaysForFreq[type];
     const dialogRef = this._freqDialog.open(
-      EventNotificationFreqDialog, {data: { type: type, value: value }}
+      EventNotificationFreqDialog, { minWidth: '50%', data: { type: type, value: value } }
     );
     dialogRef.afterClosed().subscribe(result => {
       if (result === undefined)
@@ -106,7 +106,11 @@ export class EventNotificationComponent implements OnInit {
 @Component({
   selector: 'app-event-notification-freq-dialog',
   templateUrl: './event-notification-freq-dialog.html',
-  styles: ['']
+  styles: [`
+      mat-form-field.freq-year {
+        margin-right: 1em;
+      }
+  `]
 })
 export class EventNotificationFreqDialog implements OnInit{
   cacheData: any;

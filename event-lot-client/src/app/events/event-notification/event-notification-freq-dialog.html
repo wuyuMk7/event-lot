@@ -25,12 +25,12 @@
       </mat-selection-list>
     </div>
   </div>
-  <div class="freq-dialog" *ngSwitchCase="'year'">
+  <div class="freq-dialog year" *ngSwitchCase="'year'">
     <h1 mat-dialog-title> Day of year selection</h1>
     <div mat-dialog-content>
       <p cdkFocusInitial> At most 5 selections. </p>
       <div *ngFor="let item of selectedDaysOfYear | keyvalue">
-        <mat-form-field>
+        <mat-form-field class="freq-year">
           <mat-label>Month</mat-label>
           <mat-select (selectionChange)="changeMonth($event, item.key)" 
             [(ngModel)]="item.value.m" #monthSelect>
@@ -40,7 +40,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="freq-year">
           <mat-label>Date</mat-label>
           <mat-select [(ngModel)]="item.value.d" [disabled]="monthSelect.empty">
             <mat-option *ngFor="let day of daysOfCurMonth[item.key]" [value]="day | dateSuffix">
