@@ -1,0 +1,123 @@
+<div id="div-event-summary">
+  <mat-card>
+    <mat-card-content>
+      <div *ngIf="eventFormData; else noFormDataTemp">
+        <div fxLayout="column">
+          <div class="metadata" *ngIf="eventFormData?.metadata">
+            <h4 mat-subheader> Event Metadata </h4>
+            <div class="list-item" fxLayout="column">
+              <div class="list-item-title">
+                Mode: 
+              </div>
+              <div class="list-item-content">
+                <span *ngIf="eventFormData?.metadata.group; else personalEventTemp">
+                  Group event, for group {{ eventFormData?.metadata.group }}
+                </span>
+                <ng-template #personalEventTemp>
+                  <span> Personal Event </span>
+                </ng-template>
+              </div>
+            </div>
+            <div class="list-item" fxLayout="column">
+              <div class="list-item-title">
+                Topic: 
+              </div>
+              <div class="list-item-content">
+                <span>{{ eventFormData?.metadata.topic }}</span>
+              </div>
+            </div>
+            <div class="list-item" fxLayout="column">
+              <div class="list-item-title">
+                Tags: 
+              </div>
+              <div class="list-item-content">
+                <span>{{ eventFormData?.metadata.tags.join(', ') }}</span>
+              </div>
+            </div>
+            <div class="list-item" fxLayout="column">
+              <div class="list-item-title">
+                Content: 
+              </div>
+              <div class="list-item-content">
+                <span>{{ eventFormData?.metadata.content }}</span>
+              </div>
+            </div>
+            <div class="list-item" fxLayout="column">
+              <div class="list-item-title">
+                Timezone: 
+              </div>
+              <div class="list-item-content">
+                <span>{{ eventFormData?.metadata.timezone }}</span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+
+          <div class="checklist" *ngIf="eventFormData?.checklist">
+            <h4 mat-subheader> Event checklist </h4>
+            <div>
+              <div>
+                Event checklist: 
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </div>
+
+          <div class="schedule" *ngIf="eventFormData?.schedule">
+            <h4 mat-subheader> Event Lifecycle </h4>
+            <div fxLayout="column" class="list-item"
+              *ngIf="eventFormData?.schedule.type === 'range'; else lifelongEventTemp">
+              <div class="list-item-title"> One-time event </div>
+              <div class="list-item-content"> 
+                  Event valid from 
+                  {{ eventFormData?.schedule.startdate | momentToDate }} 
+                  to 
+                  {{ eventFormData?.schedule.enddate | momentToDate }}
+              </div>
+            </div>
+            <ng-template #lifelongEventTemp>
+              <div class="list-item"> 
+                <div class="list-item-title"> Lifelong event </div> 
+              </div>
+            </ng-template>
+            <mat-divider></mat-divider>
+          </div>
+
+          <div class="notification" *ngIf="eventFormData?.notification">
+            <h4 mat-subheader> Event Notification </h4>
+            <div class="list-item" fxLayout="row">
+              <div class="list-item-title">
+                Notification 
+              </div>
+              <div class="list-item-content">
+                {{ eventFormData?.notification.switch }}
+              </div>
+            </div>
+            <div *ngIf="eventFormData?.notification.switch === 'on'" class="list-item">
+              <div *ngIf="eventFormData?.notification.type === 'day'">
+                Event appears in the checklist every day.
+              </div>
+              <div *ngIf="eventFormData?.notification.type === 'week'">
+                Event appears in the checklist 
+                on {{ eventFormData?.notification.freq.join('s, ') }}s every week.
+              </div>
+              <div *ngIf="eventFormData?.notification.type === 'month'">
+                Event appears in the checklist 
+                on {{ eventFormData?.notification.freq.join(', ') }} every month.
+              </div>
+              <div *ngIf="eventFormData?.notification.type === 'year'">
+                Event appears in the checklist 
+                on {{ eventFormData?.notification.freq.join(', ') }} every year.
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <ng-template #noFormDataTemp>
+        No data received. Please fill out event information first!
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+</div>

@@ -1,0 +1,16 @@
+#div-event-summary {
+  .list-item {
+    max-width: 100%;
+    padding: 0 0.5em;
+    margin: 1em auto;
+
+    .list-item-title {
+      width: 8em;
+      margin-bottom: 0.2em;
+    }
+    .list-item-content {
+      text-align: left;
+      overflow-wrap: break-word;
+    }
+  }
+}
