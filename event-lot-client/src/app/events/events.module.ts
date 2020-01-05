@@ -19,6 +19,8 @@ import {
   EventChecklistDialog
 } from './event-checklist/event-checklist.component';
 import { TextualStatusPipe } from './textual-status.pipe';
+import { EventSummaryComponent } from './event-summary/event-summary.component';
+import { MomentToDatePipe } from './moment-to-date.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { TextualStatusPipe } from './textual-status.pipe';
     DateSuffixPipe,
     EventChecklistComponent,
     EventChecklistDialog,
-    TextualStatusPipe
+    TextualStatusPipe,
+    EventSummaryComponent,
+    MomentToDatePipe
   ],
   imports: [
     CommonModule,
