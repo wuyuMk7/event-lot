@@ -56,9 +56,23 @@
           <div class="checklist" *ngIf="eventFormData?.checklist">
             <h4 mat-subheader> Event checklist </h4>
             <div>
-              <div>
-                Event checklist: 
-              </div>
+              <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef> No. </th>
+                  <td mat-cell *matCellDef="let index = index"> {{ index+1 }} </td>
+                </ng-container>
+                <ng-container matColumnDef="content">
+                  <th mat-header-cell *matHeaderCellDef> content </th>
+                  <td mat-cell *matCellDef="let item"> {{ item.content }} </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> status </th>
+                  <td mat-cell *matCellDef="let item"> {{ item.status | textualStatus | titlecase }} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
             </div>
             <mat-divider></mat-divider>
           </div>

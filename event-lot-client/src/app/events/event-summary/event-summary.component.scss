@@ -13,4 +13,22 @@
       overflow-wrap: break-word;
     }
   }
+
+  .checklist {
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th, td {
+      overflow-wrap: break-word;
+    }
+
+    .mat-column-index {
+      width: 2em;
+    }
+    .mat-column-status {
+      width: 4.5em;
+    }
+  }
 }
