@@ -40,7 +40,6 @@ export class EventChecklistComponent implements OnInit {
 
   selection = new SelectionModel<ChecklistItem>(true, []);
   /** Whether the number of selected elements matches the total number of rows. */
-  // TODO: change the select all to select on the current page
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -133,7 +132,10 @@ export class EventChecklistComponent implements OnInit {
   private _deleteItems(indexes: number[]) {
     indexes
       .sort((l, r) => r - l)
-      .forEach(index => this.checklist.splice(index, 1));
+      .forEach(index => {
+        this.selection.deselect(this.dataSource.data[index]);
+        this.checklist.splice(index, 1);
+      });
   }
 }
 
