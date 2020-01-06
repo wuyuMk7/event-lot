@@ -42,6 +42,7 @@ export class AddEventComponent implements OnInit {
 
   receiveChildData(event: any): void {
     this.eventFormData = event;
+    this.isSecondStepDone = true;
     console.log(this.eventFormData);
   }
 
