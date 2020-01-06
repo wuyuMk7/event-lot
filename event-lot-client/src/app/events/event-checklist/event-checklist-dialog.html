@@ -40,7 +40,7 @@
   <div class="checklist-dialog" *ngSwitchCase="'remove'">
     <h1 mat-dialog-title> Confirm deletion </h1>
     <div mat-dialog-content>
-      <p> Delete selected items? </p>
+      <p> Delete {{ retnData.count }} selected items? </p>
     </div>
   </div>
   <div class="checklist-dialog" *ngSwitchDefault>
