@@ -25,6 +25,10 @@ export class EventSummaryComponent implements OnInit {
     if (this.eventFormData && this.eventFormData.checklist) {
       this.dataSource = new MatTableDataSource<any>(this.eventFormData.checklist.checklist);
       this.dataSource.paginator = this.paginator;
+
+      let eve = new Event();
+      eve.formDataToEvent(this.eventFormData);
+      console.log(eve);
     }
   }
 }
