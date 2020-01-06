@@ -21,6 +21,10 @@ export class EventChecklistComponent implements OnInit {
   dataSource = new MatTableDataSource<ChecklistItem>(this.checklist);
   dialogData: ChecklistItem;
 
+  pageSizes: number[] = [5, 10];
+  curPageIndex = 0;
+  curPageSize = this.pageSizes[0];
+
   @ViewChild(MatTable, { static: false }) table: MatTable<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -61,6 +65,11 @@ export class EventChecklistComponent implements OnInit {
     return true;
   }
 
+  changePage(event: any): void {
+    this.curPageIndex = event.pageIndex;
+    this.curPageSize = event.pageSize;
+  }
+
   openDialog(type: string, event: any) {
     if (type == 'add') {
       this._openDialog(type, {}, {});
@@ -72,7 +81,7 @@ export class EventChecklistComponent implements OnInit {
         { index: event }
       );
     } else if (type == 'remove') {
-      this._openDialog(type, {}, { index: [event] });
+      this._openDialog(type, { count: 1 }, { index: [event] });
     }
   }
 
@@ -85,7 +94,8 @@ export class EventChecklistComponent implements OnInit {
       if (index >= 0) toBeDeleted.push(index);
     });
     if (toBeDeleted.length > 0)
-      this._openDialog('remove', {}, { index: toBeDeleted, reset: 'selection' });
+      this._openDialog('remove', { count: toBeDeleted.length },
+        { index: toBeDeleted, reset: 'selection' });
   }
 
   private _openDialog(type: string, value: any, extra: any) {
@@ -122,7 +132,10 @@ export class EventChecklistComponent implements OnInit {
   private _deleteItems(indexes: number[]) {
     indexes
       .sort((l, r) => r - l)
-      .forEach(index => this.checklist.splice(index, 1));
+      .forEach(index => {
+        this.selection.deselect(this.dataSource.data[index]);
+        this.checklist.splice(index, 1);
+      });
   }
 }
 
