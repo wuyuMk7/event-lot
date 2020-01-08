@@ -9,89 +9,102 @@ export class ChecklistItem {
   status: EventStatus;
 }
 
-export class Event {
-  id: string;
+export interface BasicEvent {
   topic: string;
-  tags: string[];
+  tags?: string[];
   content: string;
   time_offset: number;
   status: EventStatus;
 
   lifecycle: Lifecycle;
-  start_time: number;
-  end_time: number;
+  start_time?: number;
+  end_time?: number;
   last_triggered_at: number;
   created_at: number;
   modified_at: number;
 
   has_notification: boolean;
   repeat_mode: RepeatMode;
-  repeat_frequency: [number, number][];
+  repeat_frequency?: [number, number][];
 
   author: string;
   priority: number;
-  milestones: string[];
-  checklist: ChecklistItem[];
+  milestones?: string[];
+  checklist?: ChecklistItem[];
+}
 
-  formDataToEvent(form: any) {
-    this.id = '';
-    this.topic = form.metadata.topic;
-    this.tags = form.metadata.tags;
-    this.content = form.metadata.content;
-    this.status = EventStatus.Pending;
+export interface Event extends BasicEvent{
+  id: string;
+}
 
-    const timezone = form.metadata.timezone.split(',')[0];
-    this.time_offset = moment.tz(timezone).utcOffset();
+export function formDataToEvent(form: any): BasicEvent {
+  const curTimestamp = (new Date()).getTime();
+  let event: BasicEvent = {
+    topic: form.metadata.topic,
+    tags: form.metadata.tags,
+    content: form.metadata.content,
+    status: EventStatus.Pending,
 
-    this.lifecycle =
-      (form.schedule.type === 'range' ? Lifecycle.Range : Lifecycle.Lifelong);
-    if (this.lifecycle === Lifecycle.Range) {
-      this.start_time = moment(form.startdate).startOf('day').valueOf();
-      this.end_time = moment(form.enddate).startOf('day').valueOf();
-    } else {
-      this.start_time = -1;
-      this.end_time = -1;
-    }
-    this.last_triggered_at = -1;
-    this.created_at = (new Date()).getTime();
-    this.modified_at = this.created_at;
+    time_offset: 0,
+    lifecycle: Lifecycle.Lifelong,
+    last_triggered_at: -1,
+    created_at: curTimestamp,
+    modified_at: curTimestamp,
 
-    this.has_notification = (form.notification.switch === 'on' ? true : false);
-    this.repeat_mode = RepeatMode.Day;
-    this.repeat_frequency = [];
-    if (this.has_notification) {
-      switch (form.notification.type) {
-      case 'week':
-        this.repeat_mode = RepeatMode.Week;
-        for (let day of form.notification.freq)
-          this.repeat_frequency.push([ moment().day(day).weekday(), -1 ]);
-        break;
-      case 'month':
-        this.repeat_mode = RepeatMode.Month;
-        this.repeat_frequency = form.notification.freq.map(
-          day => { return [ moment().date(parseInt(day)).date(), -1 ]}
-        );
-        break;
-      case 'year':
-        this.repeat_mode = RepeatMode.Year;
-        this.repeat_frequency = form.notification.freq.map((day) => {
-          const res = day.split(' ');
-          return [ moment().month(res[0]).month(),
-            moment().date(parseInt(res[1])).date() ];
-        });
-        break;
-      default:
-        break;
-      }
-    }
+    has_notification: (form.notification.switch === 'on' ? true : false),
+    repeat_mode: RepeatMode.Day,
+    repeat_frequency: [],
 
-    this.author = '';
-    this.priority = 0;
-    this.milestones = [];
-    this.checklist = form.checklist.checklist;
+    author: '',
+    priority: 0
+  };
+
+
+  const timezone = form.metadata.timezone.split(',')[0];
+  event.time_offset = moment.tz(timezone).utcOffset();
+
+  event.lifecycle =
+    (form.schedule.type === 'range' ? Lifecycle.Range : Lifecycle.Lifelong);
+  if (event.lifecycle === Lifecycle.Range) {
+    event.start_time = moment(form.startdate).startOf('day').valueOf();
+    event.end_time = moment(form.enddate).startOf('day').valueOf();
+  } else {
+    event.start_time = -1;
+    event.end_time = -1;
   }
 
-  eventToFormData(): any {
-
+  if (event.has_notification) {
+    switch (form.notification.type) {
+    case 'week':
+      event.repeat_mode = RepeatMode.Week;
+      for (let day of form.notification.freq)
+        event.repeat_frequency.push([ moment().day(day).weekday(), -1 ]);
+      break;
+    case 'month':
+      event.repeat_mode = RepeatMode.Month;
+      event.repeat_frequency = form.notification.freq.map(
+        day => { return [ moment().date(parseInt(day)).date(), -1 ]}
+      );
+      break;
+    case 'year':
+      event.repeat_mode = RepeatMode.Year;
+      event.repeat_frequency = form.notification.freq.map((day) => {
+        const res = day.split(' ');
+        return [ moment().month(res[0]).month(),
+          moment().date(parseInt(res[1])).date() ];
+      });
+      break;
+    default:
+      break;
+    }
   }
+
+  event.milestones = [];
+  event.checklist = form.checklist.checklist;
+
+  return event;
+}
+
+export function eventToFormData(): any {
+
 }

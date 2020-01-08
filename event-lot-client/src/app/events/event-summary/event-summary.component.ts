@@ -3,8 +3,6 @@ import { Component, OnInit, OnChanges,
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Event } from '../../_models/event';
-import { EventService } from '../../_services/event.service';
 
 @Component({
   selector: 'app-event-summary',
@@ -18,7 +16,7 @@ export class EventSummaryComponent implements OnInit {
   displayedColumns = ['index', 'content', 'status'];
   dataSource: MatTableDataSource<any>;
 
-  constructor(private _eventService: EventService) { }
+  constructor() { }
 
   ngOnInit() { }
 
@@ -26,10 +24,6 @@ export class EventSummaryComponent implements OnInit {
     if (this.eventFormData && this.eventFormData.checklist) {
       this.dataSource = new MatTableDataSource<any>(this.eventFormData.checklist.checklist);
       this.dataSource.paginator = this.paginator;
-
-      this._eventService.addEventByForm(
-        this.eventFormData, this.eventFormData.metadata.group
-      );
     }
   }
 }
