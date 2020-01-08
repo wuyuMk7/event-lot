@@ -4,6 +4,8 @@ import { FormBuilder, FormControl, FormGroup,
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { EventService } from '../../_services/event.service';
+
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
@@ -22,7 +24,10 @@ export class AddEventComponent implements OnInit {
 
   eventFormData: any;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(
+    private _eventService: EventService,
+    private _formBuilder: FormBuilder
+  ) {
     this.firstStep = this._formBuilder.group({
       ownerTypeCtrl: ['Yourself', Validators.required],
       ownerGroupNameCtrl: ['']
@@ -44,6 +49,20 @@ export class AddEventComponent implements OnInit {
     this.eventFormData = event;
     this.isSecondStepDone = true;
     console.log(this.eventFormData);
+  }
+
+  submitEvent(event: any): void {
+    this._eventService.addEventByForm(
+      this.eventFormData, this.eventFormData.metadata.group
+    ).then((res) => {
+      if (res && res.status == 'success') {
+        console.log('Success!' + res.data.id);
+      } else if (res && res.status == 'err') {
+        console.log('Error!' + res.data.msg);
+      } else {
+        console.log('No response!');
+      }
+    }, (err) => { console.log(err) });
   }
 
   private _filterOwnerGroups(value: string): string[] {
