@@ -11,6 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { AuthService } from './_services/auth.service';
+import { EventService } from './_services/event.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -24,7 +27,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFirestoreModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    EventService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
