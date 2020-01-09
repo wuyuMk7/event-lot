@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, mergeMap } from 'rxjs/operators';
 
 import { Event, BasicEvent } from '../../_models/event';
 import { EventService } from '../../_services/event.service';
@@ -21,11 +21,10 @@ export class EventDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._route.paramMap.subscribe((params: ParamMap) => {
-      this._eventService
-          .getEvent(params.get('id'), '')
-          .subscribe(event => this.eventDoc$ = event);
-    });
+    this.eventDoc$ = this._route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this._eventService.getEvent(params.get('id'), ''))
+    );
   }
 
 }
