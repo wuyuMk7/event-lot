@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AddEventComponent } from './add-event/add-event.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 const routes: Routes = [
-  { path: 'add', component: AddEventComponent }
+  { path: 'add', component: AddEventComponent },
+  { path: 'detail/:id', component: EventDetailComponent}
 ];
 
 @NgModule({
