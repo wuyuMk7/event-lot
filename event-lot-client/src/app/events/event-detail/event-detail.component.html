@@ -1,0 +1,17 @@
+<p>event-detail works!</p>
+
+<div id="div-event-detail">
+  <div *ngIf="eventDoc$ | async as _event; else loading">
+    <div *ngIf="_event !== null; else noEvent">
+      {{ _event | json }}
+    </div>
+    <ng-template #noEvent>
+      <div>
+        Event doesn't exist!
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</div>
