@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { map, first, mergeMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 import { BasicEvent, Event, formDataToEvent } from '../_models/event';
@@ -29,15 +29,16 @@ export class EventService {
     });
   }
 
-  getEvent(eventId: string, group: string): Observable<any>{
+  getEvent(eventId: string, group: string): Observable<Event>{
     return this._authService.user().pipe(
-      map((user: any)=> {
-        return this.userEventCollection.doc<BasicEvent>(`${eventId}`)
-                   .valueChanges().pipe(first(),
-                     map((event) => { return event ? { id: eventId, ...event } : null })
-                   );
-      })
-    );
+             mergeMap((user:any) =>
+               this.userEventCollection.doc<BasicEvent>(`${eventId}`)
+                 .valueChanges().pipe(
+                   first(),
+                   map((event) => { return event ? { id: eventId, ...event } : null })
+                 )
+             )
+           );
   }
 
   addEventByForm(formData: any, group: string): any {
