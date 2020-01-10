@@ -1,0 +1,42 @@
+<div id="div-event-metadata">
+  <div class="event-topic">
+    <h3> {{ event.topic }} </h3>
+  </div>
+  <div class="event-owner">
+    <div *ngIf="event.author; else noEventOwner">
+      Created by {{ event.author }}
+    </div>
+    <ng-template #noEventOwner>
+      <div> Created by anonymous user </div>
+    </ng-template>
+  </div>
+  <div class="event-time">
+    <div *ngIf="event.lifecycle === lifecycles.Range; else lifelongEvent">
+      Event is valid from {{ event.start_time | unixTsToDate:event.timezone }} to {{ event.end_time }}
+      <div *ngIf="noLaterThanNow(event.start_time); else eventPending">
+        <div *ngIf="noLaterThanNow(event.end_time); else eventOngoing">
+          {{ event.end_time | daysLeft:'end' }}
+        </div>
+        <ng-template #eventOngoing>
+          <div>
+          {{ event.end_time | daysLeft:'end' }}
+          </div>
+        </ng-template>
+      </div>
+      <ng-template #eventPending>
+        <div>
+        {{ event.start_time | daysLeft:'start' }}
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #lifelongEvent>
+      <div> Lifelong event, no expiration. </div>
+    </ng-template>
+  </div>
+  <div class="event-tags">
+    {{ event.tags }}
+  </div>
+  <div class="event-cotent">
+    {{ event.content }}
+  </div>
+</div>
