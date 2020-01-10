@@ -22,6 +22,9 @@ import { TextualStatusPipe } from './textual-status.pipe';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
 import { MomentToDatePipe } from './moment-to-date.pipe';
 import { EventDetailComponent } from './event-detail/event-detail.component';
+import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata.component';
+import { UnixTsToDatePipe } from '../_shared/event-metadata/unix-ts-to-date.pipe';
+import { DaysLeftPipe } from '../_shared/event-metadata/days-left.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
     TextualStatusPipe,
     EventSummaryComponent,
     MomentToDatePipe,
-    EventDetailComponent
+    EventDetailComponent,
+    EventMetadataComponent,
+    UnixTsToDatePipe,
+    DaysLeftPipe
   ],
   imports: [
     CommonModule,
