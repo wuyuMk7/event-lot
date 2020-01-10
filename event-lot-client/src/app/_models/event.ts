@@ -13,6 +13,7 @@ export interface BasicEvent {
   topic: string;
   tags?: string[];
   content: string;
+  timezone: string;
   time_offset: number;
   status: EventStatus;
 
@@ -20,6 +21,7 @@ export interface BasicEvent {
   start_time?: number;
   end_time?: number;
   last_triggered_at: number;
+  check_at: number;
   created_at: number;
   modified_at: number;
 
@@ -45,9 +47,11 @@ export function formDataToEvent(form: any): BasicEvent {
     content: form.metadata.content,
     status: EventStatus.Pending,
 
+    timezone: '',
     time_offset: 0,
     lifecycle: Lifecycle.Lifelong,
     last_triggered_at: -1,
+    check_at: -1,
     created_at: curTimestamp,
     modified_at: curTimestamp,
 
@@ -61,6 +65,7 @@ export function formDataToEvent(form: any): BasicEvent {
 
 
   const timezone = form.metadata.timezone.split(',')[0];
+  event.timezone = timezone;
   event.time_offset = moment.tz(timezone).utcOffset();
 
   event.lifecycle =
