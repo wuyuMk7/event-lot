@@ -26,6 +26,8 @@ import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata
 import { UnixTsToDatePipe } from '../_shared/event-metadata/unix-ts-to-date.pipe';
 import { DaysLeftPipe } from '../_shared/event-metadata/days-left.pipe';
 
+import { EventChecklistDisplayComponent } from '../_shared/event-checklist-display/event-checklist-display.component';
+
 @NgModule({
   declarations: [
     AddEventComponent,
@@ -42,7 +44,8 @@ import { DaysLeftPipe } from '../_shared/event-metadata/days-left.pipe';
     EventDetailComponent,
     EventMetadataComponent,
     UnixTsToDatePipe,
-    DaysLeftPipe
+    DaysLeftPipe,
+    EventChecklistDisplayComponent
   ],
   imports: [
     CommonModule,
