@@ -1,0 +1,28 @@
+#div-event-metadata {
+  margin: 0 auto;
+  padding: 0 0.5em;
+}
+
+.metadata {
+  .icon {
+    color: #8e8e8e;
+    margin-right: 1em;
+  }
+  .text {
+    overflow-wrap: break-word;
+    max-width: 50em;
+    font-size: 0.5em;
+    color: #8e8e8e;
+  }
+}
+
+.event-status, .event-owner, .event-tags {
+  .text {
+    line-height: 3em;
+  }
+}
+
+.event-content {
+  margin-top: 1em;
+}
+

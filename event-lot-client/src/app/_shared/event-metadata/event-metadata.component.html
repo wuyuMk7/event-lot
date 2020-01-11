@@ -2,41 +2,76 @@
   <div class="event-topic">
     <h3> {{ event.topic }} </h3>
   </div>
-  <div class="event-owner">
-    <div *ngIf="event.author; else noEventOwner">
-      Created by {{ event.author }}
+  <div class="event-info" fxLayout="column">
+    <div class="event-status metadata" fxLayout="row">
+      <div class="icon" fxLayoutAlign="center center">
+        <mat-icon> trending_flat </mat-icon>
+      </div>
+      <div class="text">
+        {{ eventStatus[event.status] }} event
+      </div>
     </div>
-    <ng-template #noEventOwner>
-      <div> Created by anonymous user </div>
-    </ng-template>
-  </div>
-  <div class="event-time">
-    <div *ngIf="event.lifecycle === lifecycles.Range; else lifelongEvent">
-      Event is valid from {{ event.start_time | unixTsToDate:event.timezone }} to {{ event.end_time }}
-      <div *ngIf="noLaterThanNow(event.start_time); else eventPending">
-        <div *ngIf="noLaterThanNow(event.end_time); else eventOngoing">
-          {{ event.end_time | daysLeft:'end' }}
+    <div class="event-owner metadata" fxLayout="row">
+      <div class="icon" fxLayoutAlign="center center">
+        <mat-icon> people </mat-icon>
+      </div>
+      <div class="text">
+        <div *ngIf="event.author; else noEventOwner">
+          Created by {{ event.author }}
         </div>
-        <ng-template #eventOngoing>
-          <div>
-          {{ event.end_time | daysLeft:'end' }}
-          </div>
+        <ng-template #noEventOwner>
+          <div> Created by anonymous user </div>
         </ng-template>
       </div>
-      <ng-template #eventPending>
-        <div>
-        {{ event.start_time | daysLeft:'start' }}
+    </div>
+    <div class="event-time metadata">
+      <div *ngIf="event.lifecycle === lifecycles.Range; else lifelongEvent" fxLayout="row">
+        <div class="icon" fxLayoutAlign="center center">
+          <mat-icon> schedule </mat-icon>
         </div>
+        <div class="text" fxLayout="column">
+          <div *ngIf="noLaterThanNow(event.start_time); else eventPending">
+            <div *ngIf="noLaterThanNow(event.end_time); else eventOngoing">
+              {{ event.end_time | daysLeft:'end' }}
+            </div>
+            <ng-template #eventOngoing>
+              <div>
+              {{ event.end_time | daysLeft:'end' }}
+              </div>
+            </ng-template>
+          </div>
+          <ng-template #eventPending>
+            <div>
+            {{ event.start_time | daysLeft:'start' }}
+            </div>
+          </ng-template>
+          <div class="from">
+            From {{ event.start_time | unixTsToDate: event.timezone }} 
+          </div>
+          <div class="to">
+            to {{ event.end_time | unixTsToDate: event.timezone }}
+          </div>
+        </div>
+      </div>
+      <ng-template #lifelongEvent>
+        <div> Lifelong event, no expiration. </div>
       </ng-template>
     </div>
-    <ng-template #lifelongEvent>
-      <div> Lifelong event, no expiration. </div>
-    </ng-template>
+    <div class="event-tags metadata" fxLayout="row">
+      <div class="icon" fxLayoutAlign="center center">
+        <mat-icon> label </mat-icon>
+      </div>
+      <div class="text">
+        {{ event.tags }}
+        <div *ngIf="event.tags.length > 0; else noEventTags">
+        </div>
+        <ng-template #noEventTags>
+          <div> No tags </div>
+        </ng-template>
+      </div>
+    </div>
   </div>
-  <div class="event-tags">
-    {{ event.tags }}
-  </div>
-  <div class="event-cotent">
+  <div class="event-content">
     {{ event.content }}
   </div>
 </div>

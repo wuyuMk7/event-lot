@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Event, Lifecycle } from '../../_models/event';
+import { Event, Lifecycle, EventStatus } from '../../_models/event';
 
 @Component({
   selector: 'app-event-metadata',
@@ -11,6 +11,7 @@ export class EventMetadataComponent implements OnInit {
   @Input() event: Event;
 
   lifecycles = Lifecycle;
+  eventStatus = EventStatus;
 
   constructor() { }
 

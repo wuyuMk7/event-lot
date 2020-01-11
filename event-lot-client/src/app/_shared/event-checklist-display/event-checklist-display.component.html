@@ -1,0 +1,21 @@
+<div id="div-event-checklist-display">
+  <div class="filter">
+    <div class="status" fxLayout.xs="column">
+      <mat-checkbox (change)="filterStatus()"
+        [(ngModel)]="displayOngoingEvents"> Ongoing events </mat-checkbox>
+      <mat-checkbox (change)="filterStatus()"
+        [(ngModel)]="displayCheckedEvents"> Checked events </mat-checkbox>
+    </div>
+    <mat-form-field>
+      <input matInput [formControl]="filterValue" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div class="checklist" *ngIf="filteredList | async as checklist; else noChecklist">
+    <div class="item" *ngFor="let item of checklist">
+      {{ item.content }}
+    </div>
+  </div>
+  <ng-template #noChecklist>
+    Items not found.
+  </ng-template>
+</div>
