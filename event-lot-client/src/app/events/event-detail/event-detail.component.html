@@ -1,9 +1,8 @@
-<p>event-detail works!</p>
-
 <div id="div-event-detail">
   <div *ngIf="eventDoc$ | async as _event; else loading">
     <div *ngIf="_event !== null; else noEvent">
-      {{ _event | json }}
+      <app-event-metadata [event]="_event"></app-event-metadata>
+      <app-event-checklist-display [checklist]="_event.checklist"></app-event-checklist-display>
     </div>
     <ng-template #noEvent>
       <div>
