@@ -1,8 +1,47 @@
 .filter {
+  margin: 0 0.5em;
+  font-size: 0.9em;
+  mat-label {
+    margin-right: 1em;
+  }
   .status {
     mat-checkbox {
       margin-right: 1em;
       margin-bottom: 0.5em;
+    }
+  }
+  .input {
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+.item {
+  mat-card {
+    margin: 0.2em 0.5em;
+    .status {
+      font-size: 0.5em;
+      color: #8e8e8e;
+      margin-bottom: 1em;
+    }
+
+    .content {
+      margin-bottom: 0.25em;
+    }
+
+    .button-panel {
+      margin-top: 0.25em;
+      a {
+        font-size: 0.5em;
+        color: #8e8e8e;
+        margin-right: 1em;
+        text-decoration: underline;
+      }
+      a:hover {
+        color: #3f51b5;
+        cursor: pointer;
+      }
     }
   }
 }

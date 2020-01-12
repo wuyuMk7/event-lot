@@ -1,18 +1,37 @@
 <div id="div-event-checklist-display">
   <div class="filter">
     <div class="status" fxLayout.xs="column">
-      <mat-checkbox (change)="filterStatus()"
+      <mat-label> Item status: </mat-label>
+      <mat-checkbox (change)="callFilter()"
         [(ngModel)]="displayOngoingEvents"> Ongoing events </mat-checkbox>
-      <mat-checkbox (change)="filterStatus()"
+      <mat-checkbox (change)="callFilter()"
         [(ngModel)]="displayCheckedEvents"> Checked events </mat-checkbox>
     </div>
-    <mat-form-field>
-      <input matInput [formControl]="filterValue" placeholder="Filter">
-    </mat-form-field>
+    <div class="input">
+      <mat-form-field>
+        <input matInput [formControl]="filterValue" placeholder="Filter">
+      </mat-form-field>
+    </div>
   </div>
   <div class="checklist" *ngIf="filteredList | async as checklist; else noChecklist">
-    <div class="item" *ngFor="let item of checklist">
-      {{ item.content }}
+    <div class="item" *ngFor="let item of checklist; index as i">
+      <mat-card>
+        <div class="status">
+          #{{ item.id+1 }} {{ eventStatus[item.status] }} item
+        </div>
+        <div class="content">
+          {{ item.content }}
+        </div>
+        <div class="button-panel">
+          <a *ngIf="eventStatus[item.status] === 'Ongoing'; else refreshButton"
+             class="check" (click)="checkItem(item.id)">Check it</a>
+          <ng-template #refreshButton>
+            <a class="check" (click)="ongoingItem(item.id)">Reset it</a>
+          </ng-template>
+          <a class="modify" (click)="modifyItem(item.id, item.content)">Modify</a>
+          <a class="delete" (click)="deleteItem(item.id)">Delete</a>
+        </div>
+      </mat-card>
     </div>
   </div>
   <ng-template #noChecklist>
