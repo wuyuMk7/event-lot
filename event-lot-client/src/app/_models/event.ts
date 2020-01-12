@@ -27,7 +27,7 @@ export interface BasicEvent {
 
   has_notification: boolean;
   repeat_mode: RepeatMode;
-  repeat_frequency?: [number, number][];
+  repeat_frequency?: any[];
 
   author: string;
   priority: number;
@@ -37,6 +37,7 @@ export interface BasicEvent {
 
 export interface Event extends BasicEvent{
   id: string;
+  groupid: string;
 }
 
 export function formDataToEvent(form: any): BasicEvent {
@@ -71,8 +72,8 @@ export function formDataToEvent(form: any): BasicEvent {
   event.lifecycle =
     (form.schedule.type === 'range' ? Lifecycle.Range : Lifecycle.Lifelong);
   if (event.lifecycle === Lifecycle.Range) {
-    event.start_time = moment(form.startdate).startOf('day').valueOf();
-    event.end_time = moment(form.enddate).startOf('day').valueOf();
+    event.start_time = moment(form.schedule.startdate).startOf('day').valueOf();
+    event.end_time = moment(form.schedule.enddate).startOf('day').valueOf();
   } else {
     event.start_time = -1;
     event.end_time = -1;
@@ -83,20 +84,22 @@ export function formDataToEvent(form: any): BasicEvent {
     case 'week':
       event.repeat_mode = RepeatMode.Week;
       for (let day of form.notification.freq)
-        event.repeat_frequency.push([ moment().day(day).weekday(), -1 ]);
+        event.repeat_frequency.push({ 0: moment().day(day).weekday(), 1: -1 });
       break;
     case 'month':
       event.repeat_mode = RepeatMode.Month;
       event.repeat_frequency = form.notification.freq.map(
-        day => { return [ moment().date(parseInt(day)).date(), -1 ]}
+        day => { return { 0: moment().date(parseInt(day)).date(), 1: -1 }}
       );
       break;
     case 'year':
       event.repeat_mode = RepeatMode.Year;
       event.repeat_frequency = form.notification.freq.map((day) => {
         const res = day.split(' ');
-        return [ moment().month(res[0]).month(),
-          moment().date(parseInt(res[1])).date() ];
+        return {
+          0: moment().month(res[0]).month(),
+          1: moment().date(parseInt(res[1])).date()
+        };
       });
       break;
     default:
