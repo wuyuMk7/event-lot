@@ -54,7 +54,14 @@
         </div>
       </div>
       <ng-template #lifelongEvent>
-        <div> Lifelong event, no expiration. </div>
+        <div class="event-time-lifelong" fxLayout="row">
+          <div class="icon" fxLayoutAlign="center center">
+            <mat-icon> schedule </mat-icon>
+          </div>
+          <div class="text">
+            Lifelong event, no expiration. 
+          </div>
+        </div>
       </ng-template>
     </div>
     <div class="event-tags metadata" fxLayout="row">
