@@ -68,7 +68,7 @@ export class EventChecklistDisplayComponent implements OnInit {
       );
   }
 
-  private _filterItem(): ChecklistItem[] {
+  private _filterItem(): ChecklistItemID[] {
     const filterValue = this.filterValue.value.toLowerCase();
 
     return this.checklist.map((item, index) => {
