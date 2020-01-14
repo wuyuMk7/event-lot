@@ -86,4 +86,23 @@ export class EventService {
                  .then((ref) => Promise.resolve(ref), (err) => Promise.reject(err));
     }
   }
+
+  updateEvent(content: any, eventId: string, groupId: string): any {
+    return this._updateEvent(content, eventId, groupId).pipe(
+      map((promise:any) => promise.then(
+        (ref) => { return { status: 'success', data: {} } },
+        (err) => { return { status: 'err', data: { msg: err } } })
+      )
+    );
+  }
+
+  private _updateEvent(content: any, eventId: string, group: string): any {
+    return this._authService.user().pipe(
+      map((user: any) =>
+        this._db.doc<Event>(`records/${user.uid}/events/${eventId}`)
+          .update(content)
+          .then((ref) => Promise.resolve(ref), (err) => Promise.reject(err))
+      )
+    );
+  }
 }
