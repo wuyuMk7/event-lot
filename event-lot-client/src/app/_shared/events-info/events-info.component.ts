@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -18,8 +19,9 @@ export class EventsInfoComponent implements OnInit {
   eventStatus = EventStatus;
 
   constructor(
-		private _eventService: EventService,
-    private _checklistDialog: MatDialog
+    private _eventService: EventService,
+    private _checklistDialog: MatDialog,
+    private _infoSnackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -28,11 +30,22 @@ export class EventsInfoComponent implements OnInit {
     );
   }
 
-  openChecklist(list: ChecklistItem[]): void {
+  openChecklist(event: Event): void {
     const dialogRef = this._checklistDialog.open(
-      AppEventsInfoChecklistDialog, { minWidth: '50%', data: { list: list } }
+      AppEventsInfoChecklistDialog,
+      { minWidth: '50%', data: { list: event.checklist, topic: event.topic } }
     );
-    dialogRef.afterClosed().subscribe(res => {
+    dialogRef.afterClosed().subscribe(dialogData => {
+      if (dialogData) {
+        this._eventService.updateEvent({ checklist: event.checklist }, event.id, '')
+          .subscribe((promise:Promise<any>) => promise
+          .then(
+            res => this._infoSnackBar.open(
+              `Event ${event.topic} checklist updated`, 'OK', { duration: 2000 }),
+            err => console.log(err)
+          )
+        );
+      }
     })
   }
 }
@@ -43,11 +56,12 @@ export class EventsInfoComponent implements OnInit {
 })
 export class AppEventsInfoChecklistDialog {
   checklist: ChecklistItem[];
+  clean: boolean = true;
 
   constructor(
     private _dialogRef: MatDialogRef<AppEventsInfoChecklistDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
-	) {
+  ) {
     this.checklist = this.data.list;
   }
 
