@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { map, first, mergeMap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, first, mergeMap, filter } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
-import { BasicEvent, Event, formDataToEvent } from '../_models/event';
+import { BasicEvent, Event, formDataToEvent, EventStatus, Lifecycle } from '../_models/event';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,39 @@ export class EventService {
         map(events => events.map(event => {
           const data = event.payload.doc.data() as BasicEvent;
           const id = event.payload.doc.id;
-          return { id, ...data };
+          return { id: id, groupid: '', ...data };
         }))
       )
     });
+  }
+
+  getAllEvents(timestamp: number): Observable<Event[]> {
+    return this._authService.user().pipe(
+      mergeMap((user: any) => {
+        const afs1 = this._db.collection<BasicEvent>(`records/${user.uid}/events`,
+          ref => ref.where('start_time', '<=', timestamp)
+        ).snapshotChanges();
+        const afs2 = this._db.collection<BasicEvent>(`records/${user.uid}/events`,
+          ref => ref.where('lifecycle', '==', Lifecycle.Lifelong)
+        ).snapshotChanges();
+
+        return combineLatest(afs1, afs2).pipe(
+          map(([first, second]) => {
+            const arr = [...first, ...second];
+            return arr.filter((v, i) =>
+              arr.findIndex(_v => _v.payload.doc.id == v.payload.doc.id) === i);
+          }),
+          map(events => events.filter(
+            event => event.payload.doc.data().lifecycle === Lifecycle.Lifelong
+                     || event.payload.doc.data().end_time >= timestamp)),
+          map(events => events.map(event => {
+            const data = event.payload.doc.data() as BasicEvent;
+            const id = event.payload.doc.id;
+            return { id: id, groupid: '', ...data };
+          }))
+        );
+      })
+    );
   }
 
   getEvent(eventId: string, group: string): Observable<Event>{
@@ -35,7 +64,7 @@ export class EventService {
                this.userEventCollection.doc<BasicEvent>(`${eventId}`)
                  .valueChanges().pipe(
                    first(),
-                   map((event) => { return event ? { id: eventId, ...event } : null })
+                   map((event) => { return event ? { id: eventId, groupid: '', ...event } : null })
                  )
              )
            );

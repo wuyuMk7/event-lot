@@ -1,0 +1,42 @@
+<div id="div-events-info">
+  <div *ngIf="events$ | async as _events; else loading">
+    <div class="event-item" fxLayout="row" fxLayoutAligh="start"
+      *ngFor="let _event of _events; index as i">
+      <div class="sideways">
+        <div [class]="'event-status metadata ' + eventStatus[_event.status] | lowercase">
+          {{ eventStatus[_event.status] }}
+        </div>
+      </div>
+      <div class="content">
+        <div class="summary" #summary>
+          <div class="event-topic">
+            <h3> {{ _event.topic }} </h3>
+          </div>
+          <div class="event-tags metadata" *ngIf="_event.tags.length > 0">
+            Tags: {{ _event.tags }}
+          </div>
+          <div class="event-content">
+            {{ _event.content }}
+            ...
+            <a class="button more" 
+              (click)="detail.hidden = false; summary.hidden = true"> More </a>
+          </div>
+        </div>
+        <div class="detail" #detail [hidden]="true">
+          <app-event-metadata [event]="_event"></app-event-metadata>
+          <a class="button more" (click)="detail.hidden = true; summary.hidden = false">Hide details</a>
+          <app-event-checklist-display [checklist]="_event.checklist"></app-event-checklist-display>
+        </div>
+        <div class="button-panel">
+          <a class="button check">Check</a>
+          <a class="button modify">Modify</a>
+          <a class="button checklist">Checklist</a>
+          <a class="button delete">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</div>

@@ -1,0 +1,72 @@
+#div-events-info {
+  .event-item {
+    padding: 0 0.5em;
+    margin-bottom: 1em;
+
+    .sideways {
+      height: 5em;
+      text-align: center;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+
+      .event-status {
+        border-radius: 0 1em 1em 0;
+      }
+    }
+
+    .content {
+      padding: 0 0.5em 1em 0.5em;
+      width: 100%;
+      border: 1px solid #ddd;
+
+      .summary {
+        padding: 0 0.5em;
+        .event-tags {
+          color: #8e8e8e;
+        }
+      }
+      .detail {
+        a.more {
+          padding: 0 0.8em;
+          margin-bottom: 0.5em;
+        }
+      }
+
+      .button-panel {
+        margin-top: 0.5em;
+        padding: 0 0.5em;
+      }
+
+      a.button {
+        margin-right: 1em;
+        font-size: 0.5em;
+        text-decoration: underline;
+        color: #8e8e8e;
+      }
+      a.button:hover {
+        color: #3f51b5;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      a.more {
+        font-size: 0.6em;
+        color: #1e88e5;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .metadata{
+    font-size: 0.5em;
+  }
+
+  .pending {
+    background-color: #ffecb3;
+  }
+  .ongoing {
+    background-color: #64b5f6;
+  }
+  .checked {
+    background-color: #66bb6a;
+  }
+}

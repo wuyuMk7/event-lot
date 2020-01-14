@@ -18,15 +18,17 @@ import {
   EventChecklistComponent,
   EventChecklistDialog
 } from './event-checklist/event-checklist.component';
-import { TextualStatusPipe } from './textual-status.pipe';
 import { EventSummaryComponent } from './event-summary/event-summary.component';
-import { MomentToDatePipe } from './moment-to-date.pipe';
 import { EventDetailComponent } from './event-detail/event-detail.component';
-import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata.component';
+
+import { TextualStatusPipe } from './textual-status.pipe';
+import { MomentToDatePipe } from './moment-to-date.pipe';
 import { UnixTsToDatePipe } from '../_shared/event-metadata/unix-ts-to-date.pipe';
 import { DaysLeftPipe } from '../_shared/event-metadata/days-left.pipe';
 
+import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata.component';
 import { EventChecklistDisplayComponent } from '../_shared/event-checklist-display/event-checklist-display.component';
+import { EventsInfoComponent } from '../_shared/events-info/events-info.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { EventChecklistDisplayComponent } from '../_shared/event-checklist-displ
     EventMetadataComponent,
     UnixTsToDatePipe,
     DaysLeftPipe,
-    EventChecklistDisplayComponent
+    EventChecklistDisplayComponent,
+    EventsInfoComponent
   ],
   imports: [
     CommonModule,
