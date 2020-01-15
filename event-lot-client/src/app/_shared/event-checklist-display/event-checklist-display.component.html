@@ -1,5 +1,8 @@
-<div id="div-event-checklist-display">
+<div id="div-event-checklist-display" #checklistPanel>
   <div class="filter">
+    <div class="new">
+      <a class="new-item" (click)="newItem()">Add a new item</a>
+    </div>
     <div class="status" fxLayout.xs="column">
       <mat-label> Item status: </mat-label>
       <mat-checkbox (change)="callFilter()"
@@ -13,8 +16,8 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="checklist" *ngIf="filteredList | async as checklist; else noChecklist">
-    <div class="item" *ngFor="let item of checklist; index as i">
+  <div class="checklist" *ngIf="(filteredList | async)?.length > 0; else noChecklist" >
+    <div class="item" *ngFor="let item of filteredList | async; index as i">
       <mat-card>
         <div class="status">
           #{{ item.id+1 }} {{ eventStatus[item.status] }} item
@@ -35,6 +38,8 @@
     </div>
   </div>
   <ng-template #noChecklist>
-    Items not found.
+    <div style="margin: 0 0.5em;">
+      Items not found.
+    </div>
   </ng-template>
 </div>

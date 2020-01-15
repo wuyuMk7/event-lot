@@ -4,6 +4,17 @@
   mat-label {
     margin-right: 1em;
   }
+  .new {
+    margin-bottom: 0.5em;
+    a.new-item {
+      color: #8e8e8e;
+      text-decoration: underline;
+    }
+    a.new-item:hover {
+      color: #3f51b5;
+      cursor: pointer;
+    }
+  }
   .status {
     mat-checkbox {
       margin-right: 1em;

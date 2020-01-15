@@ -37,16 +37,52 @@ export class EventsInfoComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe(dialogData => {
       if (dialogData) {
-        this._eventService.updateEvent({ checklist: event.checklist }, event.id, '')
+        this._eventService.updateEvent({ checklist: dialogData }, event.id, event.groupid)
           .subscribe((promise:Promise<any>) => promise
+            .then(
+              res => this._infoSnackBar.open(
+                `Event ${event.topic} checklist updated`, 'OK', { duration: 2000 }),
+              err => console.log(err)
+            )
+          );
+      }
+    })
+  }
+
+  checkEvent(event: Event): void {
+    this._eventService.updateEvent({ status: EventStatus.Checked }, event.id, event.groupid)
+      .subscribe((promise: Promise<any>) => promise
+        .then(
+          res => this._infoSnackBar.open(
+            `Event ${event.topic} has been checked`, 'OK', {duration: 2000}),
+          err => console.log(err)
+        )
+      );
+  }
+
+  resetEvent(event: Event): void {
+    this._eventService.updateEvent({ status: EventStatus.Ongoing }, event.id, event.groupid)
+      .subscribe((promise: Promise<any>) => promise
+        .then(
+          res => this._infoSnackBar.open(
+            `Event ${event.topic} has been reset to ongoing`, 'OK', {duration: 2000}),
+          err => console.log(err)
+        )
+      );
+  }
+
+  deleteEvent(event: Event): void {
+    const confirmDelete = confirm(`Delete the event ${event.topic}?`);
+    if (confirmDelete) {
+      this._eventService.deleteEvent(event.id, event.groupid)
+        .subscribe((promise: Promise<any>) => promise
           .then(
             res => this._infoSnackBar.open(
-              `Event ${event.topic} checklist updated`, 'OK', { duration: 2000 }),
+              `Event ${event.topic} has been removed`, 'OK', {duration: 2000}),
             err => console.log(err)
           )
         );
-      }
-    })
+    }
   }
 }
 
@@ -62,7 +98,7 @@ export class AppEventsInfoChecklistDialog {
     private _dialogRef: MatDialogRef<AppEventsInfoChecklistDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.checklist = this.data.list;
+    this.checklist = this.data.list.map(item => ({...item}));
   }
 
   cancelClick(): void {
@@ -70,6 +106,10 @@ export class AppEventsInfoChecklistDialog {
   }
 
   okClick(): void {
-    this._dialogRef.close(this.checklist);
+    this.clean ? this._dialogRef.close() : this._dialogRef.close(this.checklist);
+  }
+
+  updateClean(clean: boolean): void {
+    this.clean = clean;
   }
 }
