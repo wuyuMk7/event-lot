@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ElementRef,
+         ViewChild, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { startWith, map } from 'rxjs/operators';
@@ -20,6 +21,7 @@ export class EventChecklistDisplayComponent implements OnInit {
   @Input() clean: boolean;
   @Output() transmit = new EventEmitter<any>();
   @Output() transmitClean = new EventEmitter<boolean>();
+  @ViewChild('checklistPanel', { static: false }) checklistPanel: ElementRef;
   eventStatus = EventStatus;
 
   filteredList: Observable<ChecklistItemID[]>;
@@ -37,6 +39,15 @@ export class EventChecklistDisplayComponent implements OnInit {
 
   transmitData(): void {
     this.transmit.emit(this.checklist);
+  }
+
+  newItem(): void {
+    const content = prompt('Please enter checklist item content');
+    if (content !== null) {
+      this._unsetCleanLabel();
+      this.checklist.push({ content: content, status: EventStatus.Ongoing });
+      this.callFilter();
+    }
   }
 
   checkItem(idx: number): void {
