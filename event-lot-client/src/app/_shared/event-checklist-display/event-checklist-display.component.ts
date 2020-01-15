@@ -17,7 +17,9 @@ interface ChecklistItemID extends ChecklistItem{
 })
 export class EventChecklistDisplayComponent implements OnInit {
   @Input() checklist: ChecklistItem[];
+  @Input() clean: boolean;
   @Output() transmit = new EventEmitter<any>();
+  @Output() transmitClean = new EventEmitter<boolean>();
   eventStatus = EventStatus;
 
   filteredList: Observable<ChecklistItemID[]>;
@@ -38,11 +40,13 @@ export class EventChecklistDisplayComponent implements OnInit {
   }
 
   checkItem(idx: number): void {
+    this._unsetCleanLabel();
     this.checklist[idx].status = EventStatus.Checked;
     this.callFilter();
   }
 
   ongoingItem(idx: number): void {
+    this._unsetCleanLabel();
     this.checklist[idx].status = EventStatus.Ongoing;
     this.callFilter();
   }
@@ -50,12 +54,14 @@ export class EventChecklistDisplayComponent implements OnInit {
   modifyItem(idx: number, content: string): void {
     const newContent = prompt("Please enter checklist item content", content);
     if (newContent !== null) {
+      this._unsetCleanLabel();
       this.checklist[idx].content = newContent;
       this.callFilter();
     }
   }
 
   deleteItem(idx: number): void {
+    this._unsetCleanLabel();
     this.checklist.splice(idx, 1);
     this.callFilter();
   }
@@ -88,5 +94,10 @@ export class EventChecklistDisplayComponent implements OnInit {
 
       return ret;
     });
+  }
+
+  private _unsetCleanLabel() {
+    this.clean = false;
+    this.transmitClean.emit(this.clean);
   }
 }

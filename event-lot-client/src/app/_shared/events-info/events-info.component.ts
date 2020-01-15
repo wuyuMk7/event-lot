@@ -70,6 +70,10 @@ export class AppEventsInfoChecklistDialog {
   }
 
   okClick(): void {
-    this._dialogRef.close(this.checklist);
+    this.clean ? this._dialogRef.close() : this._dialogRef.close(this.checklist);
+  }
+
+  updateClean(clean: boolean): void {
+    this.clean = clean;
   }
 }
