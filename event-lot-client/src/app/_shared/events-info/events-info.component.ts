@@ -37,7 +37,7 @@ export class EventsInfoComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe(dialogData => {
       if (dialogData) {
-        this._eventService.updateEvent({ checklist: event.checklist }, event.id, '')
+        this._eventService.updateEvent({ checklist: dialogData }, event.id, '')
           .subscribe((promise:Promise<any>) => promise
           .then(
             res => this._infoSnackBar.open(
@@ -62,7 +62,7 @@ export class AppEventsInfoChecklistDialog {
     private _dialogRef: MatDialogRef<AppEventsInfoChecklistDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.checklist = this.data.list;
+    this.checklist = this.data.list.map(item => ({...item}));
   }
 
   cancelClick(): void {
