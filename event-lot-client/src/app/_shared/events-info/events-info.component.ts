@@ -39,14 +39,36 @@ export class EventsInfoComponent implements OnInit {
       if (dialogData) {
         this._eventService.updateEvent({ checklist: dialogData }, event.id, '')
           .subscribe((promise:Promise<any>) => promise
-          .then(
-            res => this._infoSnackBar.open(
-              `Event ${event.topic} checklist updated`, 'OK', { duration: 2000 }),
-            err => console.log(err)
-          )
-        );
+            .then(
+              res => this._infoSnackBar.open(
+                `Event ${event.topic} checklist updated`, 'OK', { duration: 2000 }),
+              err => console.log(err)
+            )
+          );
       }
     })
+  }
+
+  checkEvent(event: Event): void {
+    this._eventService.updateEvent({ status: EventStatus.Checked }, event.id, '')
+      .subscribe((promise: Promise<any>) => promise
+        .then(
+          res => this._infoSnackBar.open(
+            `Event ${event.topic} has been checked`, 'OK', {duration: 2000}),
+          err => console.log(err)
+        )
+      );
+  }
+
+  resetEvent(event: Event): void {
+    this._eventService.updateEvent({ status: EventStatus.Ongoing }, event.id, '')
+      .subscribe((promise: Promise<any>) => promise
+        .then(
+          res => this._infoSnackBar.open(
+            `Event ${event.topic} has been reset to ongoing`, 'OK', {duration: 2000}),
+          err => console.log(err)
+        )
+      );
   }
 }
 
