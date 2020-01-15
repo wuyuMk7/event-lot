@@ -105,4 +105,23 @@ export class EventService {
       )
     );
   }
+
+  deleteEvent(eventId: string, groupId: string): any {
+    return this._deleteEvent(eventId, groupId).pipe(
+      map((promise:any) => promise.then(
+        (ref) => { return { status: 'success', data: {} } },
+        (err) => { return { status: 'err', data: { msg: err } } })
+      )
+    );
+  }
+
+  private _deleteEvent(eventId: string, group: string): any {
+    return this._authService.user().pipe(
+      map((user: any) =>
+        this._db.doc<Event>(`records/${user.uid}/events/${eventId}`)
+          .delete()
+          .then((ref) => Promise.resolve(ref), (err) => Promise.reject(err))
+      )
+    );
+  }
 }
