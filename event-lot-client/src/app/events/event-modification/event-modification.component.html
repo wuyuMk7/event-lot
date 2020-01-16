@@ -9,7 +9,6 @@
               [eventDoc]="_eventDoc"
               (transmit)="receiveChildData($event)"></app-event-form>
           <div class="step-button-panel">
-            <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
           </div>
         </mat-step>
