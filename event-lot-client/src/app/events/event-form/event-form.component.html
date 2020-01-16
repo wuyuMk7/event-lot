@@ -80,6 +80,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 	      <app-event-checklist 
+          [preChecklist]="preChecklist" 
           (transmit)="receiveChildData($event)" 
           #eventChecklist></app-event-checklist>
       </mat-expansion-panel>
@@ -90,6 +91,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 	      <app-event-scheduler 
+          [preSchedule]="preSchedule" 
           (transmit)="receiveChildData($event)" 
           #eventScheduler></app-event-scheduler>
       </mat-expansion-panel>
@@ -100,6 +102,7 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
 	      <app-event-notification 
+          [preNotification]="preNotification"
           (transmit)="receiveChildData($event)" 
           #eventNotification></app-event-notification>
       </mat-expansion-panel>

@@ -21,7 +21,7 @@ import {
   EventNotificationComponent
 } from '../event-notification/event-notification.component';
 
-import { ChecklistItem, Event } from '../../_models/event';
+import { ChecklistItem, Event, eventToFormData } from '../../_models/event';
 
 @Component({
   selector: 'app-event-form',
@@ -30,6 +30,7 @@ import { ChecklistItem, Event } from '../../_models/event';
 })
 
 export class EventFormComponent implements OnInit {
+  @Input() eventDoc: Event;
   @Input() eventMode: string;
   @Input() groupID: string;
   @Output() transmit = new EventEmitter<any>();
@@ -60,6 +61,11 @@ export class EventFormComponent implements OnInit {
 
   timezones: any = { name: [], desc: [] };
   filteredTimezones: any;
+
+  preMetadata: any = undefined;
+  preChecklist: any = undefined;
+  preSchedule: any = undefined;
+  preNotification: any = undefined;
 
   constructor(private _formBuilder: FormBuilder) {
     // this.timezones.name = moment.tz.names();
@@ -92,6 +98,27 @@ export class EventFormComponent implements OnInit {
         startWith(''),
         map(name => name ? this._filterTimezones(name): this.timezones.slice())
       );
+
+    if (this.eventDoc) {
+      //console.log(this.eventDoc);
+      //console.log(eventToFormData(this.eventDoc));
+
+      const formData = eventToFormData(this.eventDoc);
+      this.preMetadata = formData.metadata;
+      this.preChecklist = formData.checklist;
+      this.preSchedule = formData.schedule;
+      this.preNotification = formData.notification;
+
+      for (let key in this.preMetadata)
+        if (key !== 'tags')
+          this.eventCreationFormGroup.controls[key].setValue(this.preMetadata[key]);
+      this.eventTags = this.preMetadata['tags'];
+
+      if (this.eventDoc.groupid !== '') {
+        this.eventMode = 'Group';
+        this.groupID = this.eventDoc.groupid;
+      }
+    }
   }
 
   ngOnChanges() {
@@ -136,7 +163,7 @@ export class EventFormComponent implements OnInit {
   }
 
   receiveChildData(result: any) {
-    console.log(result);
+    //console.log(result);
     if (result) {
       const child = result.child;
       const data = result.data;
