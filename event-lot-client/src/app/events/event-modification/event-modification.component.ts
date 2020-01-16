@@ -14,6 +14,9 @@ import { EventService } from '../../_services/event.service';
 export class EventModificationComponent implements OnInit {
   eventDoc$: Observable<Event>;
 
+  eventFormData: any;
+  isDone: any;
+
   constructor(
     private _eventService: EventService,
     private _route: ActivatedRoute
@@ -26,4 +29,9 @@ export class EventModificationComponent implements OnInit {
     );
   }
 
+  receiveChildData(event: any): void {
+    this.eventFormData = event;
+    this.isDone = true;
+    console.log(this.eventFormData);
+  }
 }

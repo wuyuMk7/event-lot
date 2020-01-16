@@ -2,7 +2,7 @@
   <div class="stepper" *ngIf="eventDoc$ | async as _eventDoc; else loading">
     <div *ngIf="_eventDoc !== null; else noEventTemplate">
       <mat-horizontal-stepper linear #stepper>
-        <mat-step [completed]="isDone">
+        <mat-step>
           <ng-template matStepLabel> Event Details </ng-template>
           <app-event-form 
               #eventForm
