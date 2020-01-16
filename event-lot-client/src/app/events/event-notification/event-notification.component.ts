@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,
+import { Component, OnInit, ViewChild, Input,
   EventEmitter, Inject, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl,
 	 Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
@@ -29,6 +29,7 @@ const allDaysOfEachMonth: string[] = [
 })
 
 export class EventNotificationComponent implements OnInit {
+  @Input() preNotification: any;
   @Output() transmit = new EventEmitter<any>();
   eventNotificationGroup: FormGroup;
 
@@ -45,6 +46,17 @@ export class EventNotificationComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.preNotification) {
+      this.eventNotificationGroup.controls['switch'].setValue(this.preNotification.switch);
+      this.eventNotificationGroup.controls['frequency'].setValue(this.preNotification.type);
+
+      if (this.preNotification.type === 'week')
+        this.selectedDaysForFreq.week = this.preNotification.freq;
+      else if (this.preNotification.type === 'month')
+        this.selectedDaysForFreq.month = this.preNotification.freq;
+      else if (this.preNotification.type === 'year')
+        this.selectedDaysForFreq.year = this.preNotification.freq;
+    }
   }
 
   checkValid(id: string): boolean {

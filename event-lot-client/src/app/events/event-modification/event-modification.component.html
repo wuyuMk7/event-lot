@@ -1,0 +1,37 @@
+<div id="div-events-update-event">
+  <div class="stepper" *ngIf="eventDoc$ | async as _eventDoc; else loading">
+    <div *ngIf="_eventDoc !== null; else noEventTemplate">
+      <mat-horizontal-stepper linear #stepper>
+        <mat-step>
+          <ng-template matStepLabel> Event Details </ng-template>
+          <app-event-form 
+              #eventForm
+              [eventDoc]="_eventDoc"
+              (transmit)="receiveChildData($event)"></app-event-form>
+          <div class="step-button-panel">
+            <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Event summary</ng-template>
+          <app-event-summary [eventFormData]="eventFormData"></app-event-summary>
+          <div class="step-button-panel">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button color="primary" 
+                    (click)="updateEvent($event)"> Submit </button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper> 
+    </div>
+    <ng-template>
+      <div>
+        Event doesn't exist!
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loading>
+    <div>
+      Loading...
+    </div>
+  </ng-template>
+</div>

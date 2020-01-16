@@ -1,0 +1,10 @@
+#div-events-update-event {
+  .step-button-panel {
+    margin-top: 1em;
+    padding-left: 1em;
+  }
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none !important;
+}

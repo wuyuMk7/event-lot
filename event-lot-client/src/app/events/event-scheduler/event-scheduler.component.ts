@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl,
 	       Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import * as moment from 'moment';
@@ -9,6 +9,7 @@ import * as moment from 'moment';
   styleUrls: ['./event-scheduler.component.scss']
 })
 export class EventSchedulerComponent implements OnInit {
+  @Input() preSchedule: any;
   @Output() transmit = new EventEmitter<any>();
 
   eventScheduleGroup: FormGroup;
@@ -22,6 +23,10 @@ export class EventSchedulerComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.preSchedule) {
+      for (let key in this.preSchedule)
+        this.eventScheduleGroup.controls[key].setValue(this.preSchedule[key]);
+    }
   }
 
   checkValid(id: string): boolean {

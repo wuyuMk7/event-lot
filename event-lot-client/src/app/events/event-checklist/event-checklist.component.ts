@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Inject,
-  Output, EventEmitter } from '@angular/core';
+  Input, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,7 @@ import { ChecklistItem, EventStatus } from '../../_models/event';
 })
 
 export class EventChecklistComponent implements OnInit {
+  @Input() preChecklist: any;
   @Output() transmit = new EventEmitter<any>();
 
   displayedColumns: string[] = ['select', 'index', 'content', 'status', 'operations'];
@@ -36,6 +37,8 @@ export class EventChecklistComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    if (this.preChecklist)
+      this.preChecklist.checklist.forEach(item => this.checklist.push(item));
   }
 
   selection = new SelectionModel<ChecklistItem>(true, []);

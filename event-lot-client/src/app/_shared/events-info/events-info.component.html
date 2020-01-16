@@ -32,7 +32,13 @@
           <ng-template #resetTemplate>
             <a class="button check" (click)="resetEvent(_event)">Reset</a>
           </ng-template>
-          <a class="button modify">Modify</a>
+
+          <a class="button modify" [routerLink]="['/events/update', _event.id, '/group', _event.groupid]"
+            *ngIf="_event.groupid; else individualEventUpdateTemplate">Modify</a>
+          <ng-template #individualEventUpdateTemplate>
+            <a class="button modify" [routerLink]="['/events/update', _event.id]">Modify</a>
+          </ng-template>
+
           <a class="button checklist" (click)="openChecklist(_event)">Checklist</a>
           <a class="button delete" (click)="deleteEvent(_event)">Delete</a>
         </div>

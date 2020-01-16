@@ -3,8 +3,8 @@
     <h1 mat-dialog-title> Add item to checklist </h1>
     <div mat-dialog-content fxLayout="column">
       <mat-form-field>
-        <textarea matInput placeholder="Content" cdkFocusInitial
-            [(ngModel)]="retnData.content"></textarea>
+        <input matInput placeholder="Content" cdkFocusInitial 
+            [(ngModel)]="retnData.content">
       </mat-form-field>
       <div fxLayout.xs="column" class="radio-group">
         <label> Item status: </label>
@@ -18,8 +18,8 @@
   <div class="checklist-dialog" *ngSwitchCase="'update'">
     <h1 mat-dialog-title> Modify checklist item </h1>
     <div mat-dialog-content>
-      <mat-form-field>
-        <textarea matInput placeholder="Content" [(ngModel)]="retnData.content"></textarea>
+      <mat-form-field fxLayout="column">
+        <input matInput placeholder="Content" [(ngModel)]="retnData.content">
       </mat-form-field>
       <div fxLayout.xs="column" class="radio-group">
         <label> Item status: </label>
