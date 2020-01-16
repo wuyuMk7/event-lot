@@ -113,6 +113,67 @@ export function formDataToEvent(form: any): BasicEvent {
   return event;
 }
 
-export function eventToFormData(): any {
+export function eventToFormData(event: Event): any {
+  let form: any = {
+    metadata: {
+      group: event.groupid,
+      topic: event.topic,
+      content: event.content,
+      tags: event.tags,
+      timezone: `${event.timezone}, ` + moment.tz(event.timezone).format('[GMT]Z, z')
+    },
+    checklist: {
+      checklist: event.checklist
+    },
+    schedule: {
+      type: event.lifecycle === Lifecycle.Range ? 'range' : 'forever',
+      startdate: -1,
+      enddate: -1
+    },
+    notification: {
+      switch: event.has_notification ? 'on' : 'off',
+      type: ''
+    }
+  };
+
+  if (event.lifecycle === Lifecycle.Range) {
+    form.schedule.startdate = moment.unix(event.start_time/1000).startOf('day');
+    form.schedule.enddate = moment.unix(event.end_time/1000).startOf('day');
+  }
+
+  if (event.has_notification) {
+    switch (event.repeat_mode) {
+    case RepeatMode.Week:
+      form.notification.type = 'week';
+      form.notification.freq = event.repeat_frequency.map(
+        day => moment().weekday(day[0]).format('dddd')
+      );
+      break;
+    case RepeatMode.Month:
+      form.notification.type = 'month';
+      form.notification.freq = event.repeat_frequency.map(
+        day => moment().date(day[0]).format('Do')
+      );
+      break;
+    case RepeatMode.Year:
+      form.notification.type = 'year';
+      form.notification.freq = event.repeat_frequency.map(
+        day => {
+          let month = moment().month(day[0]).format('MMM');
+          let date = moment().date(day[1]).format('Do');
+          if (month !== 'May')
+            month = `${month}.`;
+
+          return `${month} ${date}`;
+        }
+      );
+      break;
+    default:
+      form.notification.type = 'day';
+      break;
+    }
+  }
+
+  return form;
 
 }
