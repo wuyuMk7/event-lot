@@ -29,6 +29,7 @@ import { DaysLeftPipe } from '../_shared/event-metadata/days-left.pipe';
 import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata.component';
 import { EventChecklistDisplayComponent } from '../_shared/event-checklist-display/event-checklist-display.component';
 import { EventsInfoComponent, AppEventsInfoChecklistDialog } from '../_shared/events-info/events-info.component';
+import { EventModificationComponent } from './event-modification/event-modification.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { EventsInfoComponent, AppEventsInfoChecklistDialog } from '../_shared/ev
     EventChecklistDisplayComponent,
     EventsInfoComponent,
     AppEventsInfoChecklistDialog,
+    EventModificationComponent,
   ],
   imports: [
     CommonModule,
