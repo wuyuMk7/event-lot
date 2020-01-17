@@ -1,5 +1,5 @@
 <div id="div-events-info">
-  <div *ngIf="events$ | async as _events; else loading">
+  <div *ngIf="events as _events; else noEvents">
     <div class="event-item" fxLayout="row" fxLayoutAligh="start"
       *ngFor="let _event of _events; index as i">
       <div class="sideways">
@@ -45,7 +45,7 @@
       </div>
     </div>
   </div>
-  <ng-template #loading>
-    Loading...
+  <ng-template #noEvents>
+    No events today!
   </ng-template>
 </div>
