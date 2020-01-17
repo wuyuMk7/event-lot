@@ -31,7 +31,7 @@ export class EventAllComponent implements OnInit {
         if (date && moment(date).isValid) {
           ts = moment(date).startOf('day').valueOf();
           if (timezone) {
-            ts = moment(date).utfOffset(parseInt(timezone)).startOf('day').valueOf();
+            ts = moment(date).utcOffset(parseInt(timezone)).startOf('day').valueOf();
           }
         }
         return this._eventService.getAllEvents(ts);
