@@ -30,6 +30,7 @@ import { EventMetadataComponent } from '../_shared/event-metadata/event-metadata
 import { EventChecklistDisplayComponent } from '../_shared/event-checklist-display/event-checklist-display.component';
 import { EventsInfoComponent, AppEventsInfoChecklistDialog } from '../_shared/events-info/events-info.component';
 import { EventModificationComponent } from './event-modification/event-modification.component';
+import { EventAllComponent } from './event-all/event-all.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { EventModificationComponent } from './event-modification/event-modificat
     EventsInfoComponent,
     AppEventsInfoChecklistDialog,
     EventModificationComponent,
+    EventAllComponent,
   ],
   imports: [
     CommonModule,

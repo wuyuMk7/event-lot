@@ -73,7 +73,7 @@ export function formDataToEvent(form: any): BasicEvent {
     (form.schedule.type === 'range' ? Lifecycle.Range : Lifecycle.Lifelong);
   if (event.lifecycle === Lifecycle.Range) {
     event.start_time = moment(form.schedule.startdate).startOf('day').valueOf();
-    event.end_time = moment(form.schedule.enddate).startOf('day').valueOf();
+    event.end_time = moment(form.schedule.enddate).endOf('day').valueOf();
   } else {
     event.start_time = -1;
     event.end_time = -1;

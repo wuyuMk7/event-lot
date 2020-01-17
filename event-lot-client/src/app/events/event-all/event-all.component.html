@@ -1,0 +1,8 @@
+<div id="div-event-all">
+  <div *ngIf="events$ | async as _events; else loading">
+    <app-events-info [events]="_events"></app-events-info>
+  </div>
+  <ng-template #loading>
+    Loading...
+  </ng-template>
+</div>

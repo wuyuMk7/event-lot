@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { Event, BasicEvent, EventStatus, ChecklistItem } from '../../_models/eve
   styleUrls: ['./events-info.component.scss']
 })
 export class EventsInfoComponent implements OnInit {
-  events$: Observable<Event[]>;
+  @Input() events: Event[];
   eventStatus = EventStatus;
 
   constructor(
@@ -24,11 +24,7 @@ export class EventsInfoComponent implements OnInit {
     private _infoSnackBar: MatSnackBar
   ) { }
 
-  ngOnInit() {
-    this.events$ = this._eventService.getAllEvents(
-      moment.unix(Date.now() / 1000).startOf('day').valueOf()
-    );
-  }
+  ngOnInit() {}
 
   openChecklist(event: Event): void {
     const dialogRef = this._checklistDialog.open(
