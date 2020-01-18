@@ -1,0 +1,11 @@
+<div id="div-site-auth">
+  <div style="max-width: 25em; text-align:center; margin:0 auto;">
+    <div *ngIf="user | async as _user; else showLogin">
+      <h1>Hello {{ _user.name }}!</h1>
+      <button (click)="logout()">Logout</button>
+    </div>
+    <ng-template #showLogin>
+      <button mat-flat-button color="primary" (click)="login()">Sign-in with Google</button>
+    </ng-template>
+  </div>
+</div>
