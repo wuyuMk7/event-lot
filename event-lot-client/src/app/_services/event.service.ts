@@ -52,9 +52,10 @@ export class EventService {
             const data = event.payload.doc.data() as BasicEvent;
             const id = event.payload.doc.id;
             const tsNow = Date.now();
-            if (event.payload.doc.data().start_time <= tsNow &&
+            if (event.payload.doc.data().lifecycle == Lifecycle.Lifelong || (
+                event.payload.doc.data().start_time <= tsNow &&
                 event.payload.doc.data().end_time >= tsNow &&
-                event.payload.doc.data().status == EventStatus.Pending)
+                event.payload.doc.data().status == EventStatus.Pending))
               event.payload.doc.ref.update({ status: EventStatus.Ongoing });
             return { id: id, groupid: '', ...data };
           }))
