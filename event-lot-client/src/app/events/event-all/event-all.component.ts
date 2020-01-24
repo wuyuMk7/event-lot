@@ -26,7 +26,8 @@ export class EventAllComponent implements OnInit {
       switchMap((params: ParamMap) => {
         const date = params.get('date');
         const timezone = params.get('timezone');
-        let ts = moment.unix(Date.now() / 1000).startOf('day').valueOf();
+        //let ts = moment.unix(Date.now() / 1000).startOf('day').valueOf();
+        let ts = moment.unix(Date.now() / 1000).valueOf();
 
         if (date && moment(date).isValid) {
           ts = moment(date).startOf('day').valueOf();
