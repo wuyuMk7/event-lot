@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environments as Environments } from './_envs/environments';
 
@@ -28,6 +29,7 @@ import { EventService } from './_services/event.service';
     MaterialModule
   ],
   providers: [
+    AngularFireAuthGuard,
     AuthService,
     EventService
   ],
