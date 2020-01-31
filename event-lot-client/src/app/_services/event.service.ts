@@ -4,7 +4,9 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, first, mergeMap, filter } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
-import { BasicEvent, Event, formDataToEvent, EventStatus, Lifecycle } from '../_models/event';
+import { BasicEvent, Event, formDataToEvent, EventStatus, Lifecycle, RepeatMode } from '../_models/event';
+
+import * as moment from 'moment-timezone';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +50,47 @@ export class EventService {
           map(events => events.filter(
             event => event.payload.doc.data().lifecycle === Lifecycle.Lifelong
                      || event.payload.doc.data().end_time >= timestamp)),
+          map(events => events.filter(
+            event => {
+              let ret = false;
+              if (event.payload.doc.data().has_notification) {
+                const tz_time = moment.unix(timestamp/1000).tz(event.payload.doc.data().timezone);
+                const month = tz_time.month(), date = tz_time.date(), weekday = tz_time.day();
+                switch (event.payload.doc.data().repeat_mode) {
+                case RepeatMode.Day:
+                  ret = true;
+                  break;
+                case RepeatMode.Week:
+                  for (let freq of event.payload.doc.data().repeat_frequency) {
+                    if (freq[0] === weekday){
+                      ret = true;
+                      break;
+                    }
+                  }
+                  break;
+                case RepeatMode.Month:
+                  for (let freq of event.payload.doc.data().repeat_frequency) {
+                    if (freq[0] === date){
+                      ret = true;
+                      break;
+                    }
+                  }
+                  break;
+                case RepeatMode.Year:
+                  for (let freq of event.payload.doc.data().repeat_frequency) {
+                    if (freq[0] === month && freq[1] === date){
+                      ret = true;
+                      break;
+                    }
+                  }
+                  break;
+                default:
+                  break;
+                }
+              }
+              return ret;
+            }
+          )),
           map(events => events.map(event => {
             const data = event.payload.doc.data() as BasicEvent;
             const id = event.payload.doc.id;
