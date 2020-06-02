@@ -1,0 +1,68 @@
+<div id="div-milestone-add-milestone">
+  <div class="stepper">
+    <mat-horizontal-stepper linear #stepper>
+      <mat-step [stepControl]="firstStep">
+        <div class="first-step">
+          <form [formGroup]="firstStep">
+            <ng-template matStepLabel> Event Owner </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-subtitle>Create an milestone for: </mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-radio-group formControlName="ownerTypeCtrl" fxLayout="column" fxLayoutAlign="space-around">
+                  <mat-radio-button class="owner-types" *ngFor="let type of ownerTypes" [value]="type">
+                    {{ type }}
+                  </mat-radio-button>
+                </mat-radio-group>
+                <div *ngIf="firstStep.value.ownerTypeCtrl === 'Group'">
+                  <mat-form-field class="owner-groups">
+                    <input type="text" placeholder="Pick one group" 
+                           aria-label="OwnerGroupName" matInput 
+                           formControlName="ownerGroupNameCtrl" 
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let ownerGroup of filteredOwnerGroups | async" [value] = "ownerGroup">
+                        {{ ownerGroup }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameEmptyError')">
+                      Please select a group from the list. If you don't have any group please use another option.
+                    </mat-error>
+                    <mat-error *ngIf="firstStep.controls.ownerGroupNameCtrl.hasError('groupNameInvalidError')">
+                      Invalid group name. Please select a group from the list.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <div class="step-button-panel">
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="secondStep" [completed]="isSecondStepDone">
+        <ng-template matStepLabel> Event Details </ng-template>
+        <app-milestone-form 
+            #eventForm
+            [eventMode]="firstStep.value.ownerTypeCtrl"
+	    	    [groupID]="firstStep.value.ownerGroupNameCtrl"
+            (transmit)="receiveChildData($event)"></app-milestone-form>
+        <div class="step-button-panel">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="eventForm.checkValid() && stepper.next()">Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Event summary</ng-template>
+        <app-event-summary [eventFormData]="eventFormData"></app-event-summary>
+        <div class="step-button-panel">
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button color="primary" 
+                  (click)="submitEvent($event)"> Submit </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper> 
+  </div>
+</div>
